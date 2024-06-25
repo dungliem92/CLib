@@ -13,11 +13,11 @@
   @Description
     This source file provides APIs for driver for UART2. 
     Generation Information : 
-        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.168.0
+        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.170.0
         Device            :  PIC32MM0256GPM048
     The generated drivers are tested against the following:
-        Compiler          :  XC32 v2.40
-        MPLAB             :  MPLAB X v5.40
+        Compiler          :  XC32 v2.50
+        MPLAB             :  MPLAB X v5.45
 */
 
 /*
@@ -151,7 +151,7 @@ void UART2_SetTxInterruptHandler(void (* interruptHandler)(void))
 
 }
 
-void __attribute__ ((vector(_UART2_TX_VECTOR), interrupt(IPL2SOFT))) _UART2_TX ( void )
+void __attribute__ ((vector(_UART2_TX_VECTOR), interrupt(IPL3SOFT))) _UART2_TX ( void )
 {
     if(UART2_TxDefaultInterruptHandler)
     {
@@ -201,7 +201,7 @@ void UART2_SetRxInterruptHandler(void (* interruptHandler)(void))
     }
 }
 
-void __attribute__ ((vector(_UART2_RX_VECTOR), interrupt(IPL2SOFT))) _UART2_RX( void )
+void __attribute__ ((vector(_UART2_RX_VECTOR), interrupt(IPL3SOFT))) _UART2_RX( void )
 {
     if(UART2_RxDefaultInterruptHandler)
     {
@@ -239,7 +239,7 @@ void __attribute__ ((weak)) UART2_Receive_CallBack(void)
 
 }
 
-void __attribute__ ((vector(_UART2_ERR_VECTOR), interrupt(IPL2SOFT))) _UART2_ERR( void )
+void __attribute__ ((vector(_UART2_ERR_VECTOR), interrupt(IPL3SOFT))) _UART2_ERR( void )
 {
     if ((U2STAbits.OERR == 1))
     {

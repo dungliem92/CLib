@@ -2,17 +2,24 @@
 <configurationDescriptor version="65">
   <logicalFolder name="root" displayName="root" projectFiles="true">
     <logicalFolder name="f1" displayName="Docs" projectFiles="true">
+      <itemPath>../Docs/Pinout.xlsx</itemPath>
     </logicalFolder>
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="Apps" projectFiles="true">
+        <itemPath>Apps/Power_Monitor.h</itemPath>
+        <itemPath>Apps/AppMain.h</itemPath>
+        <itemPath>Apps/VCP_Debug.h</itemPath>
+        <itemPath>Apps/VCP.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="Cfg" projectFiles="true">
+        <itemPath>cfg/Project_Cfg.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
                      projectFiles="true">
         <logicalFolder name="drivers" displayName="drivers" projectFiles="true">
-          <itemPath>mcc_generated_files/drivers/i2c_types.h</itemPath>
-          <itemPath>mcc_generated_files/drivers/i2c_master.h</itemPath>
-          <itemPath>mcc_generated_files/drivers/i2c_simple_master.h</itemPath>
           <itemPath>mcc_generated_files/drivers/spi_master.h</itemPath>
         </logicalFolder>
         <logicalFolder name="memory" displayName="memory" projectFiles="true">
@@ -28,6 +35,7 @@
           <itemPath>mcc_generated_files/usb/usb.h</itemPath>
           <itemPath>mcc_generated_files/usb/usb_common.h</itemPath>
           <itemPath>mcc_generated_files/usb/usb_hal.h</itemPath>
+          <itemPath>mcc_generated_files/usb/usb_device_cdc.h</itemPath>
         </logicalFolder>
         <itemPath>mcc_generated_files/coretimer.h</itemPath>
         <itemPath>mcc_generated_files/interrupt_manager.h</itemPath>
@@ -42,8 +50,37 @@
         <itemPath>mcc_generated_files/pin_manager.h</itemPath>
         <itemPath>mcc_generated_files/system.h</itemPath>
         <itemPath>mcc_generated_files/spi2_types.h</itemPath>
-        <itemPath>mcc_generated_files/i2c1_driver.h</itemPath>
         <itemPath>mcc_generated_files/spi2_driver.h</itemPath>
+        <itemPath>mcc_generated_files/i2c1.h</itemPath>
+        <itemPath>mcc_generated_files/i2c2.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="MIPS" displayName="RPCLib" projectFiles="true">
+        <logicalFolder name="Buttons" displayName="Buttons" projectFiles="true">
+          <itemPath>../../../MIPS/Buttons/Buttons.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="Common" displayName="Common" projectFiles="true">
+          <itemPath>../../../MIPS/Common/LibDef.h</itemPath>
+          <itemPath>../../../MIPS/Common/RingBuffer.h</itemPath>
+          <itemPath>../../../MIPS/Common/TinyPrintf.h</itemPath>
+          <itemPath>../../../MIPS/Common/UserFunctions.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="Indicator" displayName="Indicator" projectFiles="true">
+          <itemPath>../../../MIPS/Indicator/Indicator.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="Memory" displayName="Memory" projectFiles="true">
+          <itemPath>../../../MIPS/Memory/SST25xx.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="SoftPeripherals"
+                       displayName="SoftPeripherals"
+                       projectFiles="true">
+          <itemPath>../../../MIPS/SoftPeripherals/SW_I2C_Master.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="System" displayName="System" projectFiles="true">
+          <itemPath>../../../MIPS/System/PIC32MM_Gpio.h</itemPath>
+          <itemPath>../../../MIPS/System/softWdt.h</itemPath>
+          <itemPath>../../../MIPS/System/TaskManager.h</itemPath>
+          <itemPath>../../../MIPS/System/TickTimer.h</itemPath>
+        </logicalFolder>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -51,26 +88,35 @@
                    projectFiles="true">
       <itemPath>Makefile</itemPath>
       <itemPath>HWP070_V2.mc3</itemPath>
+      <itemPath>App.bat</itemPath>
+      <itemPath>CleanUp.bat</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
                    projectFiles="true">
+      <itemPath>../Bld/App.ld</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="f2" displayName="Apps" projectFiles="true">
+        <itemPath>Apps/AppMain.c</itemPath>
+        <itemPath>Apps/Power_Monitor.c</itemPath>
+        <itemPath>Apps/VCP.c</itemPath>
+        <itemPath>Apps/VCP_Debug.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f1" displayName="Cfg" projectFiles="true">
+        <itemPath>cfg/SST25xx_Cfg.c</itemPath>
+        <itemPath>cfg/Indicator_Cfg.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
                      projectFiles="true">
         <logicalFolder name="docs" displayName="docs" projectFiles="true">
           <itemPath>mcc_generated_files/docs/spi.dox</itemPath>
           <itemPath>mcc_generated_files/docs/spi_basic.dox</itemPath>
-          <itemPath>mcc_generated_files/docs/i2c_simple.dox</itemPath>
         </logicalFolder>
         <logicalFolder name="drivers" displayName="drivers" projectFiles="true">
-          <itemPath>mcc_generated_files/drivers/i2c_types.c</itemPath>
-          <itemPath>mcc_generated_files/drivers/i2c_master.c</itemPath>
-          <itemPath>mcc_generated_files/drivers/i2c_simple_master.c</itemPath>
           <itemPath>mcc_generated_files/drivers/spi_master.c</itemPath>
         </logicalFolder>
         <logicalFolder name="memory" displayName="memory" projectFiles="true">
@@ -84,6 +130,7 @@
           <itemPath>mcc_generated_files/usb/usb_device_events.c</itemPath>
           <itemPath>mcc_generated_files/usb/usb_device.c</itemPath>
           <itemPath>mcc_generated_files/usb/usb_descriptors.c</itemPath>
+          <itemPath>mcc_generated_files/usb/usb_device_cdc.c</itemPath>
         </logicalFolder>
         <itemPath>mcc_generated_files/uart3.c</itemPath>
         <itemPath>mcc_generated_files/system.c</itemPath>
@@ -96,13 +143,17 @@
         <itemPath>mcc_generated_files/pin_manager.c</itemPath>
         <itemPath>mcc_generated_files/uart2.c</itemPath>
         <itemPath>mcc_generated_files/spi2_driver.c</itemPath>
-        <itemPath>mcc_generated_files/i2c1_driver.c</itemPath>
+        <itemPath>mcc_generated_files/i2c1.c</itemPath>
+        <itemPath>mcc_generated_files/i2c2.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
+    <Elem>../Docs</Elem>
+    <Elem>../Bld</Elem>
+    <Elem>../../../MIPS</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -125,11 +176,13 @@
       <compileType>
         <linkerTool>
           <linkerLibItems>
+            <linkerLibFileItem>../../../MIPS/pic32mm.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
         <archiverTool>
         </archiverTool>
         <loading>
+          <loadableFile>../Bld/bld_m0256_0F0A18194802.hex</loadableFile>
           <useAlternateLoadableFile>false</useAlternateLoadableFile>
           <parseOnProdLoad>false</parseOnProdLoad>
           <alternateLoadableFile></alternateLoadableFile>
@@ -233,7 +286,7 @@
         <property key="optimization-level" value=""/>
         <property key="preprocessor-macros" value=""/>
         <property key="remove-unused-sections" value="true"/>
-        <property key="report-memory-usage" value="true"/>
+        <property key="report-memory-usage" value="false"/>
         <property key="serial-length" value=""/>
         <property key="serial-origin" value=""/>
         <property key="stack-size" value="2048"/>
@@ -272,7 +325,7 @@
       </C32CPP>
       <C32Global>
         <property key="common-include-directories"
-                  value="mcc_generated_files;cfg;app;..\Bld;..\..\..\MIPS\MIPS"/>
+                  value="mcc_generated_files;Cfg;Apps;..\Bld;..\..\..\MIPS"/>
         <property key="gp-relative-option" value=""/>
         <property key="legacy-libc" value="true"/>
         <property key="mdtcm" value=""/>

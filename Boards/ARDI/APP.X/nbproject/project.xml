@@ -10,6 +10,9 @@
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>.</sourceRootElem>
+                <sourceRootElem>../Docs</sourceRootElem>
+                <sourceRootElem>../Bld</sourceRootElem>
+                <sourceRootElem>../../../MIPS</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

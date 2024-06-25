@@ -49,7 +49,7 @@ please contact mla_licensing@microchip.com
 
 #if defined( USB_SUPPORT_DEVICE )
     #include "usb_device.h"     // USB Device abstraction layer interface
-    #include "usb_device_generic.h"
+    #include "usb_device_cdc.h"
 #endif
 
 #include "usb_hal.h"            // Hardware Abstraction Layer interface
@@ -59,7 +59,7 @@ please contact mla_licensing@microchip.com
  */
 #define USB_MAJOR_VER   2        // Firmware version, major release number.
 #define USB_MINOR_VER   13       // Firmware version, minor release number.
-#define USB_DOT_VER     0        // Firmware version, dot release number.
+#define USB_DOT_VER     1        // Firmware version, dot release number.
 
 #endif // _USB_H_
 

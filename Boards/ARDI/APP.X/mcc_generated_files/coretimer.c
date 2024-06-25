@@ -14,13 +14,13 @@
   @Description
     This source file provides implementations for driver APIs for CORETIMER.
     Generation Information :
-        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - pic24-dspic-pic32mm : 1.168.0
+        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - pic24-dspic-pic32mm : 1.169.0
         Device            :  PIC32MM0256GPM048
         Driver Version    :  2.00
     The generated drivers are tested against the following:
         Compiler          :  XC32 v2.40
         MPLAB             :  MPLAB X v5.40
-*/
+ */
 
 /*
     (c) 2016 Microchip Technology Inc. and its subsidiaries. You may use this
@@ -42,58 +42,67 @@
 
     MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE
     TERMS.
-*/
+ */
 
 /**
   Section: Included Files
-*/
+ */
 
 #include "coretimer.h"
 
+void (*CORETIMER_DefaultInterruptHandler)(void);
+
 /**
   Section: Core Timer Module APIs
-*/
+ */
 
-void CORETIMER_Initialize()
+void CORETIMER_Initialize(void)
 {
-   // Set the count value
-   _CP0_SET_COUNT(0x0); 
-   // Set the compare value
-   _CP0_SET_COMPARE(0x0); 
     // Enable the interrupt
-   IEC0bits.CTIE = 1;
-
+    IEC0bits.CTIE=0;
+    // Set the count value
+    _CP0_SET_COUNT(0x0);
+    // Set the compare value
+   _CP0_SET_COMPARE(0xB71B00); 
+    // Enable the interrupt
+    IEC0bits.CTIE=1;
 }
 
-void CORETIMER_EnableInterrupt()
+void CORETIMER_EnableInterrupt(void)
 {
-    IEC0bits.CTIE = 1;
+    IEC0bits.CTIE=1;
 }
 
-void CORETIMER_DisableInterrupt()
+void CORETIMER_DisableInterrupt(void)
 {
-    IEC0bits.CTIE = 0;
+    IEC0bits.CTIE=0;
 }
 
-uint32_t CORETIMER_CountGet()
+uint32_t CORETIMER_CountGet(void)
 {
-   return _CP0_GET_COUNT();
+    return _CP0_GET_COUNT();
 }
 
-void __attribute__ ((vector(_CORE_TIMER_VECTOR), interrupt(IPL1SOFT))) _CORE_TIMER_ISR(void)
+void CORETIMER_SetInterruptHandler(void (* interruptHandler)(void))
 {
-   uint32_t static compare = 0x0;
+    CORETIMER_DefaultInterruptHandler=interruptHandler;
+}
 
-   // Update the compare value
-   compare = compare + 0x0;
+void __attribute__((vector(_CORE_TIMER_VECTOR), interrupt(IPL1SOFT))) _CORE_TIMER_ISR(void)
+{
+    uint32_t static compare=0xB71B00;
 
-   _CP0_SET_COMPARE(compare);
+    // Update the compare value
+   compare = compare + 0xB71B00;
 
-   IFS0CLR= 1 << _IFS0_CTIF_POSITION;
-   // Add your custom code here
+    _CP0_SET_COMPARE(compare);
 
+    IFS0CLR=1<<_IFS0_CTIF_POSITION;
+    // Add your custom code here
+    if(CORETIMER_DefaultInterruptHandler)
+        CORETIMER_DefaultInterruptHandler();
 }
 
 /**
  End of File
-*/
+ */

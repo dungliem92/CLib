@@ -13,13 +13,13 @@
   @Description
     This header file provides APIs for driver for CORETIMER.
     Generation Information :
-        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - pic24-dspic-pic32mm : 1.168.0
+        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - pic24-dspic-pic32mm : 1.169.0
         Device            :  PIC32MM0256GPM048
         Driver Version    :  2.00
     The generated drivers are tested against the following:
         Compiler          :  XC32 v2.40
         MPLAB             :  MPLAB X v5.40
-*/
+ */
 
 /*
     (c) 2016 Microchip Technology Inc. and its subsidiaries. You may use this
@@ -41,65 +41,67 @@
 
     MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE
     TERMS.
-*/
+ */
 
 #ifndef _CORETIMER_H
 #define _CORETIMER_H
 
 /**
   Section: Included Files
-*/
+ */
 
 #include <xc.h>
 #include <stdint.h>
 #include <stdbool.h>
 
 #ifdef __cplusplus  // Provide C++ Compatibility
-    extern "C" {
+extern "C" {
 #endif
 
-/**
-  @Summary
-    Initializes the Core Timer peripheral
+    /**
+      @Summary
+        Initializes the Core Timer peripheral
 
-  @Description
-    This function sets the initial count and compare
-    value of the core timer
+      @Description
+        This function sets the initial count and compare
+        value of the core timer
 
-  @Preconditions
-    None
+      @Preconditions
+        None
 
-  @Param
-    None
+      @Param
+        None
 
-  @Returns
-    None
-*/
-void CORETIMER_Initialize();
+      @Returns
+        None
+     */
+    void CORETIMER_Initialize(void);
 
-void CORETIMER_EnableInterrupt();
+    void CORETIMER_SetInterruptHandler(void (* interruptHandler)(void));
 
-void CORETIMER_DisableInterrupt();
+    void CORETIMER_EnableInterrupt(void);
 
-/**
-  @Summary
-    Returns the count value
+    void CORETIMER_DisableInterrupt(void);
 
-  @Description
-    This function returns the core timer's 
-    count value
+    /**
+      @Summary
+        Returns the count value
+
+      @Description
+        This function returns the core timer's 
+        count value
  
-  @Preconditions
-    None
+      @Preconditions
+        None
 
-  @Param
-    None
+      @Param
+        None
 
-  @Returns
-    Returns the count value of the core 
-    timer module
-*/
-uint32_t CORETIMER_CountGet();
+      @Returns
+        Returns the count value of the core 
+        timer module
+     */
+    uint32_t CORETIMER_CountGet(void);
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 }
@@ -108,5 +110,5 @@ uint32_t CORETIMER_CountGet();
 #endif	//_CORETIMER_H
 /**
  End of File
-*/
+ */
 

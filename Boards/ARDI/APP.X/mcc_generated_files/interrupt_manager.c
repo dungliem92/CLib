@@ -80,6 +80,21 @@ void INTERRUPT_Initialize (void)
         IPC14bits.U2RXIP = 2;
     //    Sub Priority: 0
         IPC14bits.U2RXIS = 0;
+    //    CNAI: PORT A Change Notification
+    //    Priority: 7
+        IPC2bits.CNAIP = 7;
+    //    Sub Priority: 0
+        IPC2bits.CNAIS = 0;
+    //    CNBI: PORT B Change Notification
+    //    Priority: 7
+        IPC2bits.CNBIP = 7;
+    //    Sub Priority: 1
+        IPC2bits.CNBIS = 1;
+    //    CNCI: PORT C Change Notification
+    //    Priority: 7
+        IPC2bits.CNCIP = 7;
+    //    Sub Priority: 2
+        IPC2bits.CNCIS = 2;
     //    UERI: UART 3 Error
     //    Priority: 3
         IPC15bits.U3EIP = 3;
@@ -95,14 +110,4 @@ void INTERRUPT_Initialize (void)
         IPC14bits.U3RXIP = 3;
     //    Sub Priority: 0
         IPC14bits.U3RXIS = 0;
-    //    MICI: I2C 1 Master
-    //    Priority: 4
-        IPC16bits.I2C1MIP = 4;
-    //    Sub Priority: 0
-        IPC16bits.I2C1MIS = 0;
-    //    SICI: I2C 1 Slave
-    //    Priority: 4
-        IPC16bits.I2C1SIP = 4;
-    //    Sub Priority: 1
-        IPC16bits.I2C1SIS = 1;
 }

@@ -98,7 +98,6 @@ extern "C" {
         CHANNEL_VBG, //Channel Name:VBG   Assigned to:Shared Channel
         CHANNEL_AVSS, //Channel Name:AVSS   Assigned to:Shared Channel
         CHANNEL_AVDD, //Channel Name:AVDD   Assigned to:Shared Channel
-        CHANNEL_END
     } ADC1_CHANNEL;
 
     /**

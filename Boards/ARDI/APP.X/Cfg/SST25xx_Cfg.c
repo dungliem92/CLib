@@ -28,17 +28,17 @@ const sst_chip_t ChipInfo={
     FLASH_PROTECT_UNLOCK
 };
 
-void FLASH_SPI_Open(void)
+void SST_SPI_Open(void)
 {
     spi2_open(MASTER0_CONFIG);
 }
 
-uint8_t FLASH_SPI_ExchangeByte(uint8_t b)
+uint8_t SST_SPI_ExchangeByte(uint8_t b)
 {
     return spi2_exchangeByte(b);
 }
 
-void FLASH_SPI_Close(void)
+void SST_SPI_Close(void)
 {
     spi2_close();
 }

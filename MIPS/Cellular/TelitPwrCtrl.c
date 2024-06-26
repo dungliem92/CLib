@@ -1,14 +1,9 @@
 #include "TelitPwrCtrl.h"
 #include "System/TickTimer.h"
-
-#ifdef USE_TASKMANAGER
 #include "System/TaskManager.h"
-#else
-#define Task_Done()
-#endif
 
 #ifdef USE_TELITPWRCTRL_DEBUG
-#include "Common/TinyPrintf.h"
+#include "Common/Debug.h"
 #else
 #define __dbs(...)
 #define __dbs_t(...)
@@ -16,70 +11,6 @@
 #define __tsdbs(...)
 #define __tsdbsu_t(...)
 #define __tsdbs_t(...)
-#endif
-
-#ifndef TELIT_VCEL_STARTUP_MIN
-#define TELIT_VCEL_STARTUP_MIN  3200 // mV
-#endif
-
-#ifndef TELIT_VCEL_PPWRDN_MIN
-#define TELIT_VCEL_PPWRDN_MIN   2700 // mV
-#endif
-
-#ifndef TELIT_VAUX_MIN
-#define TELIT_VAUX_MIN          1350 // mV
-#endif
-
-#ifndef TELIT_VAUX_TIMEOUT
-#define TELIT_VAUX_TIMEOUT      10000 // ms
-#ifndef DISABLE_LIBRARY_WARNING
-#warning "Default TELIT_VAUX_TIMEOUT is 10s"
-#endif
-#endif
-
-#define TELIT_ONOFF_PULSE       5500 // ms
-#define TELIT_ONOFF_TIMEOUT     3500 // ms
-
-#define TELIT_HWSDN_PULSE       12000 // ms
-#define TELIT_HWSDN_TIMEOUT     3500 // ms
-
-#define TELIT_FSDN_PULSE        800 // ms
-#define TELIT_FSDN_TIMEOUT      3500 // ms
-
-#define TELIT_SWRDY_WAIT        1000 // ms
-
-#ifndef TELIT_PWR_DISCHR_WAIT
-#define TELIT_PWR_DISCHR_WAIT   3000 // ms
-#endif
-
-#ifndef DISABLE_LIBRARY_WARNING
-#ifndef TELIT_HWSDN_SetState
-#warning "Not use TELIT_HWSDN_SetState(x)"
-#endif
-
-#ifndef TELIT_FSDN_SetState
-#warning "Not use TELIT_FSDN_SetState(x)"
-#endif
-
-#ifndef TELIT_PWREN_SetState
-#warning "Not use TELIT_PWREN_SetState(x)"
-#endif
-
-#ifndef TELIT_SWRDY_GetState
-#warning "Not use TELIT_SWRDY_GetState(x)"
-#endif
-#endif
-
-#ifndef TELIT_ONOFF_SetState
-#error "Please define TELIT_ONOFF_SetState(x)"
-#endif
-
-#ifndef TELIT_VCEL_Get
-#error "Please define TELIT_VCEL_Get()"
-#endif
-
-#ifndef TELIT_VAUX_Get
-#error "Please define TELIT_VAUX_Get()"
 #endif
 
 typedef enum
@@ -121,61 +52,39 @@ static struct
 
 telit_stt_t TelitState; // Global variable
 
-#ifdef USE_TASKMANAGER
-public new_simple_task_t(Telit_PwrCtrl_Tasks)
-#else
-
-void Telit_PwrCtrl_Tasks(void *arg)
-#endif
-// <editor-fold defaultstate="collapsed" desc="Power control task">
+public new_simple_task_t(Telit_PwrCtrl_Tasks) // <editor-fold defaultstate="collapsed" desc="Power control task">
 {
     if(TelitState.vcelRdy==0)
     {
-        if(TELIT_VCEL_Get()>=TELIT_VCEL_STARTUP_MIN)
+        if(TELIT_VCEL_Get()>=TelitPara.TELIT_VCEL_STARTUP_MIN)
             TelitState.vcelRdy=1;
     }
-    else if(TELIT_VCEL_Get()<TELIT_VCEL_PPWRDN_MIN)
+    else if(TELIT_VCEL_Get()<TelitPara.TELIT_VCEL_PPWRDN_MIN)
         TelitState.vcelRdy=0;
 
-    if(TELIT_VAUX_Get()>=TELIT_VAUX_MIN)
+    if(TELIT_VAUX_Get()>=TelitPara.TELIT_VAUX_MIN)
         TelitState.vauxRdy=1;
     else
         TelitState.vauxRdy=0;
 
-#ifdef TELIT_SWRDY_GetState
-    if(TELIT_SWRDY_GetState()==1)
+    if(TELIT_SWRDY_GetState())
         TelitState.swRdy=1;
     else
         TelitState.swRdy=0;
-#else
-    if(TelitState.swRdy==0)
-        TelitState.swRdy=1;
-#endif
 
     switch(PwrCtrlCxt.Now)
     {
         default:
         case PWRCTRL_MODULE_OFF: // Do nothing
             TelitState.busy=0;
-
-#ifdef USE_TASKMANAGER
             __tsdbs_t("Close task: Telit_PwrCtrl_Tasks");
             TaskManager_End_Task(Telit_PwrCtrl_Tasks);
-#endif
             break;
 
         case PWRCTRL_INIT:
-#ifdef TELIT_PWREN_SetState
             TELIT_PWREN_SetState(0);
-#endif
-
-#ifdef TELIT_HWSDN_SetState
             TELIT_HWSDN_SetState(0);
-#endif
-
-#ifdef TELIT_FSDN_SetState
             TELIT_FSDN_SetState(0);
-#endif
             TELIT_ONOFF_SetState(0);
             Tick_Timer_Reset(PwrCtrlCxt.Tick);
             PwrCtrlCxt.Now=PwrCtrlCxt.Next;
@@ -192,7 +101,7 @@ void Telit_PwrCtrl_Tasks(void *arg)
                 PwrCtrlCxt.Count.dischr=0;
                 __tsdbs_t("Pwr ena");
             }
-            else if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TELIT_PWR_DISCHR_WAIT)) // Power is not ready in TELIT_PWR_DISCHR_WAIT ms
+            else if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TelitPara.TELIT_PWR_DISCHR_WAIT)) // Power is not ready in TELIT_PWR_DISCHR_WAIT ms
             {
                 __tsdbsu_t("DisChr err: ", TELIT_VCEL_Get());
                 TelitState.dischrErr=1;
@@ -209,7 +118,6 @@ void Telit_PwrCtrl_Tasks(void *arg)
             break;
 
         case PWRCTRL_PWREN:
-#ifdef TELIT_PWREN_SetState
             TELIT_PWREN_SetState(1);
 
             if(TelitState.vcelRdy==1)
@@ -233,26 +141,18 @@ void Telit_PwrCtrl_Tasks(void *arg)
                 else
                     PwrCtrlCxt.Next=PWRCTRL_MODULE_OFF;
             }
-#else
-            PwrCtrlCxt.Now=PWRCTRL_TRIG_ON;
-            Tick_Timer_Reset(PwrCtrlCxt.Tick);
-            __tsdbs_t("Trig on");
-#endif
             break;
 
         case PWRCTRL_TRIG_ON:
             TELIT_ONOFF_SetState(1);
 
-#ifdef DYNAMIC_ONOFF_PULSE
-            if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, DYNAMIC_ONOFF_PULSE))
-#else
-            if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TELIT_ONOFF_PULSE))
-#endif
+            if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TelitPara.TELIT_ONOFF_PULSE))
             {
                 TELIT_ONOFF_SetState(0);
                 PwrCtrlCxt.Now=PWRCTRL_CHECK_VAUX;
                 __tsdbs_t("Check Vaux");
             }
+
             break;
 
         case PWRCTRL_CHECK_VAUX:
@@ -263,7 +163,7 @@ void Telit_PwrCtrl_Tasks(void *arg)
                 Tick_Timer_Reset(PwrCtrlCxt.Tick);
                 __tsdbs_t("Check SwRdy");
             }
-            else if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TELIT_VAUX_TIMEOUT)) // VAUX is not ready in TELIT_VAUX_TIMEOUT ms
+            else if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TelitPara.TELIT_VAUX_TIMEOUT)) // VAUX is not ready in TELIT_VAUX_TIMEOUT ms
             {
                 __tsdbsu_t("Vaux err: ", TELIT_VAUX_Get());
                 PwrCtrlCxt.Now=PWRCTRL_INIT;
@@ -279,7 +179,6 @@ void Telit_PwrCtrl_Tasks(void *arg)
             break;
 
         case PWRCTRL_CHECK_SWRDY:
-#ifdef TELIT_SWRDY_GetState
             if(TelitState.swRdy==1)
             {
                 PwrCtrlCxt.Now=PWRCTRL_MODULE_RDY;
@@ -287,7 +186,7 @@ void Telit_PwrCtrl_Tasks(void *arg)
                 Tick_Timer_Reset(PwrCtrlCxt.Tick);
                 __tsdbs_t("SwRdy Ok");
             }
-            else if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TELIT_SWRDY_WAIT)) // SWRDY is not ready in TELIT_SWRDY_WAIT ms
+            else if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TelitPara.TELIT_SWRDY_WAIT)) // SWRDY is not ready in TELIT_SWRDY_WAIT ms
             {
                 __tsdbs_t("SwRdy err, Turn off");
                 PwrCtrlCxt.Now=PWRCTRL_TRIG_FSDN;
@@ -300,13 +199,6 @@ void Telit_PwrCtrl_Tasks(void *arg)
                 else
                     PwrCtrlCxt.Next=PWRCTRL_MODULE_OFF;
             }
-#else
-            if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TELIT_SWRDY_WAIT))
-            {
-                PwrCtrlCxt.Now=PWRCTRL_MODULE_RDY;
-                __tsdbs_t("SwRdy Ok");
-            }
-#endif
             break;
 
         case PWRCTRL_MODULE_RDY:
@@ -321,23 +213,22 @@ void Telit_PwrCtrl_Tasks(void *arg)
                 {
                     TelitState.reboot=1;
 
-#if(TELIT_VAUX_TIMEOUT>0)
-                    if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TELIT_VAUX_TIMEOUT)) // VAUX is not ready in TELIT_VAUX_TIMEOUT ms
+                    if(TelitPara.TELIT_VAUX_TIMEOUT>0)
                     {
-                        __tsdbsu_t("Vaux lost: ", TELIT_VAUX_Get());
-                        PwrCtrlCxt.Now=PWRCTRL_INIT;
-
-                        if(PwrCtrlCxt.Count.reboot<PwrCtrlCxt.Retry)
+                        if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TelitPara.TELIT_VAUX_TIMEOUT)) // VAUX is not ready in TELIT_VAUX_TIMEOUT ms
                         {
-                            PwrCtrlCxt.Count.reboot++;
-                            __dbsu_t(", retry ", PwrCtrlCxt.Count.reboot);
+                            __tsdbsu_t("Vaux lost: ", TELIT_VAUX_Get());
+                            PwrCtrlCxt.Now=PWRCTRL_INIT;
+
+                            if(PwrCtrlCxt.Count.reboot<PwrCtrlCxt.Retry)
+                            {
+                                PwrCtrlCxt.Count.reboot++;
+                                __dbsu_t(", retry ", PwrCtrlCxt.Count.reboot);
+                            }
+                            else
+                                PwrCtrlCxt.Next=PWRCTRL_MODULE_OFF;
                         }
-                        else
-                            PwrCtrlCxt.Next=PWRCTRL_MODULE_OFF;
                     }
-#else
-#warning "No VAUX TIMEOUT"
-#endif
                 }
             }
             else
@@ -351,40 +242,30 @@ void Telit_PwrCtrl_Tasks(void *arg)
             break;
 
         case PWRCTRL_TRIG_FSDN:
-#ifdef TELIT_FSDN_SetState
             TELIT_FSDN_SetState(1);
             Tick_Timer_Reset(PwrCtrlCxt.Tick);
             PwrCtrlCxt.Now=PWRCTRL_RELEASE_FSDN;
             __tsdbs_t("Trig Fsdn");
+            break;
 
         case PWRCTRL_RELEASE_FSDN:
-            if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TELIT_FSDN_PULSE))
+            if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TelitPara.TELIT_FSDN_PULSE))
             {
                 TELIT_FSDN_SetState(0);
                 PwrCtrlCxt.Now=PWRCTRL_TRIG_OFF;
                 __tsdbs_t("Rel Fsdn");
             }
             break;
-#else
-            PwrCtrlCxt.Now=PWRCTRL_TRIG_OFF;
-#endif
 
         case PWRCTRL_TRIG_OFF:
             if(TelitState.vauxRdy==1)
             {
-#ifdef TELIT_FSDN_SetState
-                if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TELIT_FSDN_TIMEOUT))
+                if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TelitPara.TELIT_FSDN_TIMEOUT))
                 {
                     TELIT_ONOFF_SetState(1);
                     PwrCtrlCxt.Now=PWRCTRL_RELEASE_OFF;
                     __tsdbs_t("Trig off");
                 }
-#else
-                TELIT_ONOFF_SetState(1);
-                Tick_Timer_Reset(PwrCtrlCxt.Tick);
-                PwrCtrlCxt.Now=PWRCTRL_RELEASE_OFF;
-                __tsdbs_t("Trig off");
-#endif
             }
             else
             {
@@ -394,11 +275,7 @@ void Telit_PwrCtrl_Tasks(void *arg)
             break;
 
         case PWRCTRL_RELEASE_OFF:
-#ifdef DYNAMIC_ONOFF_PULSE
-            if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, DYNAMIC_ONOFF_PULSE))
-#else
-            if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TELIT_ONOFF_PULSE))
-#endif
+            if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TelitPara.TELIT_ONOFF_PULSE))
             {
                 TELIT_ONOFF_SetState(0);
                 PwrCtrlCxt.Now=PWRCTRL_TRIG_HWSDN;
@@ -409,15 +286,11 @@ void Telit_PwrCtrl_Tasks(void *arg)
         case PWRCTRL_TRIG_HWSDN:
             if(TelitState.vauxRdy==1)
             {
-                if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TELIT_ONOFF_TIMEOUT))
+                if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TelitPara.TELIT_ONOFF_TIMEOUT))
                 {
-#ifdef TELIT_HWSDN_SetState
                     TELIT_HWSDN_SetState(1);
                     PwrCtrlCxt.Now=PWRCTRL_RELEASE_HWSDN;
                     __tsdbs_t("Trig hwsdn");
-#else
-                    PwrCtrlCxt.Now=PWRCTRL_PWRDISABLE;
-#endif
                 }
             }
             else
@@ -427,21 +300,19 @@ void Telit_PwrCtrl_Tasks(void *arg)
             }
             break;
 
-#ifdef TELIT_HWSDN_SetState
         case PWRCTRL_RELEASE_HWSDN:
-            if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TELIT_HWSDN_PULSE))
+            if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TelitPara.TELIT_HWSDN_PULSE))
             {
                 TELIT_HWSDN_SetState(0);
                 PwrCtrlCxt.Now=PWRCTRL_PWRDISABLE;
                 __tsdbs_t("Rel hwsdn");
             }
             break;
-#endif
 
         case PWRCTRL_PWRDISABLE:
             if(TelitState.vauxRdy==1)
             {
-                if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TELIT_HWSDN_TIMEOUT))
+                if(Tick_Timer_Is_Over_Ms(PwrCtrlCxt.Tick, TelitPara.TELIT_HWSDN_TIMEOUT))
                     __tsdbs_t("Force pwr dis");
                 else
                     break;
@@ -474,10 +345,8 @@ void Telit_TurnOn(bool dischrFirst, uint8_t Retry) // <editor-fold defaultstate=
         else
             PwrCtrlCxt.Next=PWRCTRL_PWREN;
 
-#ifdef USE_TASKMANAGER
         __dbs("\nCreate task: Telit_PwrCtrl_Tasks");
         TaskManager_Create_NewSimpleTask(Telit_PwrCtrl_Tasks);
-#endif
     }
     else
         __tsdbs("Already on");
@@ -487,9 +356,7 @@ void Telit_TurnOff(void) // <editor-fold defaultstate="collapsed" desc="Turn off
 {
     if(TelitState.vauxRdy==1)
     {
-#ifdef TELIT_FSDN_SetState
         TELIT_FSDN_SetState(1);
-#endif
         PwrCtrlCxt.Now=PWRCTRL_TRIG_FSDN;
         PwrCtrlCxt.Next=PWRCTRL_MODULE_OFF;
         __tsdbs("Turn off");
@@ -521,9 +388,4 @@ void Telit_PwrCtrl_Init(void) // <editor-fold defaultstate="collapsed" desc="Ini
     TelitState.val=0;
     PwrCtrlCxt.Now=PWRCTRL_INIT;
     PwrCtrlCxt.Next=PWRCTRL_MODULE_OFF;
-
-#ifdef USE_TASKMANAGER
-    __tsdbs("Create task: Telit_PwrCtrl_Tasks");
-    TaskManager_Create_NewSimpleTask(Telit_PwrCtrl_Tasks);
-#endif
 } // </editor-fold>

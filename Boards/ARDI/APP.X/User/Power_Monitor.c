@@ -1,9 +1,9 @@
 #include "Power_Monitor.h"
 #include "System/TickTimer.h"
 #include "System/TaskManager.h"
-#include "Common/UserFunctions.h"
+#include "Common/Utils.h"
 
-static pwrmoni_buf_t PwrMoniBuff[8];
+static pwrmoni_buf_t PwrMoniBuff[ADC_CHANNEL_COUNT];
 
 uint16_t Power_Monitor_Get(ADC1_CHANNEL Channel) // <editor-fold defaultstate="collapsed" desc="Get voltage">
 {
@@ -16,13 +16,12 @@ uint16_t Power_Monitor_Get(ADC1_CHANNEL Channel) // <editor-fold defaultstate="c
         case VBAT_DIV:
         case UNO_AN1:
         case UNO_AN2:
-
         case CHANNEL_VBG:
         case CHANNEL_VDD_core:
         case CHANNEL_AVSS:
         case CHANNEL_AVDD:
-            tmp*=825;
-            tmp/=1024;
+            tmp*=ADC_VREF;
+            tmp/=ADC_RESOLUTION;
             break;
 
         default:
@@ -35,19 +34,22 @@ uint16_t Power_Monitor_Get(ADC1_CHANNEL Channel) // <editor-fold defaultstate="c
 
 private new_delay_task_t(Power_Monitor_Tasks) // <editor-fold defaultstate="collapsed" desc="Power monitor tasks">
 {
-    ADC1_CHANNEL ch;
+    static ADC1_CHANNEL ch=UNO_VREF;
 
-    for(ch=UNO_VREF; ch<CHANNEL_END; ch++)
+    ch=UNO_VREF;
+    
+    while(ch<(UNO_VREF+ADC_CHANNEL_COUNT))
     {
         ADC1_ChannelSelect(ch);
         ADC1_Start();
-        __delay_us(20);
+        Task_Delay(Power_Monitor_Tasks, 1);
         ADC1_Stop();
 
         while(!AD1CON1bits.DONE)
             ADC1_Tasks();
 
         PwrMoniBuff[ch].Val=iir(&PwrMoniBuff[ch].Iir, (uint16_t) ADC1BUF0, 2);
+        ch++;
     }
 
     Task_Done();

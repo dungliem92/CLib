@@ -20,7 +20,7 @@
     The generated drivers are tested against the following:
         Compiler          :  XC32 v2.40
         MPLAB 	          :  MPLAB X v5.40
-*/
+ */
 
 /*
     (c) 2020 Microchip Technology Inc. and its subsidiaries. You may use this
@@ -42,18 +42,18 @@
 
     MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE
     TERMS.
-*/
+ */
 
 #ifndef _PIN_MANAGER_H
 #define _PIN_MANAGER_H
 /**
     Section: Includes
-*/
+ */
 #include <xc.h>
 #include <stdbool.h>
 /**
     Section: Device Pin Macros
-*/
+ */
 /**
   @Summary
     Sets the GPIO pin, RA0, high using LATA0.
@@ -76,7 +76,7 @@
     UNO_VREF_SetHigh();
     </code>
 
-*/
+ */
 #define UNO_VREF_SetHigh()          ( LATASET = (1 << 0) )
 /**
   @Summary
@@ -100,7 +100,7 @@
     UNO_VREF_SetLow();
     </code>
 
-*/
+ */
 #define UNO_VREF_SetLow()           ( LATACLR = (1 << 0) )
 
 /**
@@ -125,18 +125,16 @@
     UNO_VREF_SetValue(false);
     </code>
 
-*/
-inline static void UNO_VREF_SetValue(bool value)
-{
-  if(value)
-  {
-    UNO_VREF_SetHigh();
-  }
-  else
-  {
-    UNO_VREF_SetLow();
-  }
+ */
+inline static void UNO_VREF_SetValue(bool value) {
+    if (value) {
+        UNO_VREF_SetHigh();
+    } else {
+        UNO_VREF_SetLow();
+    }
 }
+
+#define PIN_UNO_VREF PIN_A0
 
 /**
   @Summary
@@ -160,7 +158,7 @@ inline static void UNO_VREF_SetValue(bool value)
     UNO_VREF_Toggle();
     </code>
 
-*/
+ */
 #define UNO_VREF_Toggle()           ( LATAINV = (1 << 0) )
 /**
   @Summary
@@ -186,7 +184,7 @@ inline static void UNO_VREF_SetValue(bool value)
     postValue = UNO_VREF_GetValue();
     </code>
 
-*/
+ */
 #define UNO_VREF_GetValue()         PORTAbits.RA0
 /**
   @Summary
@@ -210,7 +208,7 @@ inline static void UNO_VREF_SetValue(bool value)
     UNO_VREF_SetDigitalInput();
     </code>
 
-*/
+ */
 #define UNO_VREF_SetDigitalInput()   ( TRISASET = (1 << 0) )
 /**
   @Summary
@@ -234,7 +232,7 @@ inline static void UNO_VREF_SetValue(bool value)
     UNO_VREF_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define UNO_VREF_SetDigitalOutput()   ( TRISACLR = (1 << 0) )
 /**
   @Summary
@@ -258,7 +256,7 @@ inline static void UNO_VREF_SetValue(bool value)
     UNO_AN3_SetHigh();
     </code>
 
-*/
+ */
 #define UNO_AN3_SetHigh()          ( LATASET = (1 << 1) )
 /**
   @Summary
@@ -282,7 +280,7 @@ inline static void UNO_VREF_SetValue(bool value)
     UNO_AN3_SetLow();
     </code>
 
-*/
+ */
 #define UNO_AN3_SetLow()           ( LATACLR = (1 << 1) )
 
 /**
@@ -307,18 +305,16 @@ inline static void UNO_VREF_SetValue(bool value)
     UNO_AN3_SetValue(false);
     </code>
 
-*/
-inline static void UNO_AN3_SetValue(bool value)
-{
-  if(value)
-  {
-    UNO_AN3_SetHigh();
-  }
-  else
-  {
-    UNO_AN3_SetLow();
-  }
+ */
+inline static void UNO_AN3_SetValue(bool value) {
+    if (value) {
+        UNO_AN3_SetHigh();
+    } else {
+        UNO_AN3_SetLow();
+    }
 }
+
+#define PIN_UNO_AN3 PIN_A1
 
 /**
   @Summary
@@ -342,7 +338,7 @@ inline static void UNO_AN3_SetValue(bool value)
     UNO_AN3_Toggle();
     </code>
 
-*/
+ */
 #define UNO_AN3_Toggle()           ( LATAINV = (1 << 1) )
 /**
   @Summary
@@ -368,7 +364,7 @@ inline static void UNO_AN3_SetValue(bool value)
     postValue = UNO_AN3_GetValue();
     </code>
 
-*/
+ */
 #define UNO_AN3_GetValue()         PORTAbits.RA1
 /**
   @Summary
@@ -392,7 +388,7 @@ inline static void UNO_AN3_SetValue(bool value)
     UNO_AN3_SetDigitalInput();
     </code>
 
-*/
+ */
 #define UNO_AN3_SetDigitalInput()   ( TRISASET = (1 << 1) )
 /**
   @Summary
@@ -416,7 +412,7 @@ inline static void UNO_AN3_SetValue(bool value)
     UNO_AN3_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define UNO_AN3_SetDigitalOutput()   ( TRISACLR = (1 << 1) )
 /**
   @Summary
@@ -440,7 +436,7 @@ inline static void UNO_AN3_SetValue(bool value)
     BUTTON_SetHigh();
     </code>
 
-*/
+ */
 #define BUTTON_SetHigh()          ( LATASET = (1 << 10) )
 /**
   @Summary
@@ -464,7 +460,7 @@ inline static void UNO_AN3_SetValue(bool value)
     BUTTON_SetLow();
     </code>
 
-*/
+ */
 #define BUTTON_SetLow()           ( LATACLR = (1 << 10) )
 
 /**
@@ -489,18 +485,16 @@ inline static void UNO_AN3_SetValue(bool value)
     BUTTON_SetValue(false);
     </code>
 
-*/
-inline static void BUTTON_SetValue(bool value)
-{
-  if(value)
-  {
-    BUTTON_SetHigh();
-  }
-  else
-  {
-    BUTTON_SetLow();
-  }
+ */
+inline static void BUTTON_SetValue(bool value) {
+    if (value) {
+        BUTTON_SetHigh();
+    } else {
+        BUTTON_SetLow();
+    }
 }
+
+#define PIN_BUTTON              PIN_A10
 
 /**
   @Summary
@@ -524,7 +518,7 @@ inline static void BUTTON_SetValue(bool value)
     BUTTON_Toggle();
     </code>
 
-*/
+ */
 #define BUTTON_Toggle()           ( LATAINV = (1 << 10) )
 /**
   @Summary
@@ -550,7 +544,7 @@ inline static void BUTTON_SetValue(bool value)
     postValue = BUTTON_GetValue();
     </code>
 
-*/
+ */
 #define BUTTON_GetValue()         PORTAbits.RA10
 /**
   @Summary
@@ -574,7 +568,7 @@ inline static void BUTTON_SetValue(bool value)
     BUTTON_SetDigitalInput();
     </code>
 
-*/
+ */
 #define BUTTON_SetDigitalInput()   ( TRISASET = (1 << 10) )
 /**
   @Summary
@@ -598,7 +592,7 @@ inline static void BUTTON_SetValue(bool value)
     BUTTON_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define BUTTON_SetDigitalOutput()   ( TRISACLR = (1 << 10) )
 /**
   @Summary
@@ -622,7 +616,7 @@ inline static void BUTTON_SetValue(bool value)
     LED2_SetHigh();
     </code>
 
-*/
+ */
 #define LED2_SetHigh()          ( LATASET = (1 << 15) )
 /**
   @Summary
@@ -646,7 +640,7 @@ inline static void BUTTON_SetValue(bool value)
     LED2_SetLow();
     </code>
 
-*/
+ */
 #define LED2_SetLow()           ( LATACLR = (1 << 15) )
 
 /**
@@ -671,18 +665,16 @@ inline static void BUTTON_SetValue(bool value)
     LED2_SetValue(false);
     </code>
 
-*/
-inline static void LED2_SetValue(bool value)
-{
-  if(value)
-  {
-    LED2_SetHigh();
-  }
-  else
-  {
-    LED2_SetLow();
-  }
+ */
+inline static void LED2_SetValue(bool value) {
+    if (value) {
+        LED2_SetHigh();
+    } else {
+        LED2_SetLow();
+    }
 }
+
+#define PIN_LED2    PIN_A15
 
 /**
   @Summary
@@ -706,7 +698,7 @@ inline static void LED2_SetValue(bool value)
     LED2_Toggle();
     </code>
 
-*/
+ */
 #define LED2_Toggle()           ( LATAINV = (1 << 15) )
 /**
   @Summary
@@ -732,7 +724,7 @@ inline static void LED2_SetValue(bool value)
     postValue = LED2_GetValue();
     </code>
 
-*/
+ */
 #define LED2_GetValue()         PORTAbits.RA15
 /**
   @Summary
@@ -756,7 +748,7 @@ inline static void LED2_SetValue(bool value)
     LED2_SetDigitalInput();
     </code>
 
-*/
+ */
 #define LED2_SetDigitalInput()   ( TRISASET = (1 << 15) )
 /**
   @Summary
@@ -780,7 +772,7 @@ inline static void LED2_SetValue(bool value)
     LED2_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define LED2_SetDigitalOutput()   ( TRISACLR = (1 << 15) )
 /**
   @Summary
@@ -804,7 +796,7 @@ inline static void LED2_SetValue(bool value)
     LIGHT_INT_SetHigh();
     </code>
 
-*/
+ */
 #define LIGHT_INT_SetHigh()          ( LATASET = (1 << 6) )
 /**
   @Summary
@@ -828,7 +820,7 @@ inline static void LED2_SetValue(bool value)
     LIGHT_INT_SetLow();
     </code>
 
-*/
+ */
 #define LIGHT_INT_SetLow()           ( LATACLR = (1 << 6) )
 
 /**
@@ -853,18 +845,16 @@ inline static void LED2_SetValue(bool value)
     LIGHT_INT_SetValue(false);
     </code>
 
-*/
-inline static void LIGHT_INT_SetValue(bool value)
-{
-  if(value)
-  {
-    LIGHT_INT_SetHigh();
-  }
-  else
-  {
-    LIGHT_INT_SetLow();
-  }
+ */
+inline static void LIGHT_INT_SetValue(bool value) {
+    if (value) {
+        LIGHT_INT_SetHigh();
+    } else {
+        LIGHT_INT_SetLow();
+    }
 }
+
+#define PIN_LIGHT_INT PIN_A6
 
 /**
   @Summary
@@ -888,7 +878,7 @@ inline static void LIGHT_INT_SetValue(bool value)
     LIGHT_INT_Toggle();
     </code>
 
-*/
+ */
 #define LIGHT_INT_Toggle()           ( LATAINV = (1 << 6) )
 /**
   @Summary
@@ -914,7 +904,7 @@ inline static void LIGHT_INT_SetValue(bool value)
     postValue = LIGHT_INT_GetValue();
     </code>
 
-*/
+ */
 #define LIGHT_INT_GetValue()         PORTAbits.RA6
 /**
   @Summary
@@ -938,7 +928,7 @@ inline static void LIGHT_INT_SetValue(bool value)
     LIGHT_INT_SetDigitalInput();
     </code>
 
-*/
+ */
 #define LIGHT_INT_SetDigitalInput()   ( TRISASET = (1 << 6) )
 /**
   @Summary
@@ -962,7 +952,7 @@ inline static void LIGHT_INT_SetValue(bool value)
     LIGHT_INT_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define LIGHT_INT_SetDigitalOutput()   ( TRISACLR = (1 << 6) )
 /**
   @Summary
@@ -986,7 +976,7 @@ inline static void LIGHT_INT_SetValue(bool value)
     LED1_SetHigh();
     </code>
 
-*/
+ */
 #define LED1_SetHigh()          ( LATASET = (1 << 7) )
 /**
   @Summary
@@ -1010,7 +1000,7 @@ inline static void LIGHT_INT_SetValue(bool value)
     LED1_SetLow();
     </code>
 
-*/
+ */
 #define LED1_SetLow()           ( LATACLR = (1 << 7) )
 
 /**
@@ -1035,18 +1025,16 @@ inline static void LIGHT_INT_SetValue(bool value)
     LED1_SetValue(false);
     </code>
 
-*/
-inline static void LED1_SetValue(bool value)
-{
-  if(value)
-  {
-    LED1_SetHigh();
-  }
-  else
-  {
-    LED1_SetLow();
-  }
+ */
+inline static void LED1_SetValue(bool value) {
+    if (value) {
+        LED1_SetHigh();
+    } else {
+        LED1_SetLow();
+    }
 }
+
+#define PIN_LED1 PIN_A7
 
 /**
   @Summary
@@ -1070,7 +1058,7 @@ inline static void LED1_SetValue(bool value)
     LED1_Toggle();
     </code>
 
-*/
+ */
 #define LED1_Toggle()           ( LATAINV = (1 << 7) )
 /**
   @Summary
@@ -1096,7 +1084,7 @@ inline static void LED1_SetValue(bool value)
     postValue = LED1_GetValue();
     </code>
 
-*/
+ */
 #define LED1_GetValue()         PORTAbits.RA7
 /**
   @Summary
@@ -1120,7 +1108,7 @@ inline static void LED1_SetValue(bool value)
     LED1_SetDigitalInput();
     </code>
 
-*/
+ */
 #define LED1_SetDigitalInput()   ( TRISASET = (1 << 7) )
 /**
   @Summary
@@ -1144,7 +1132,7 @@ inline static void LED1_SetValue(bool value)
     LED1_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define LED1_SetDigitalOutput()   ( TRISACLR = (1 << 7) )
 /**
   @Summary
@@ -1168,7 +1156,7 @@ inline static void LED1_SetValue(bool value)
     ACC_INT1_SetHigh();
     </code>
 
-*/
+ */
 #define ACC_INT1_SetHigh()          ( LATASET = (1 << 8) )
 /**
   @Summary
@@ -1192,7 +1180,7 @@ inline static void LED1_SetValue(bool value)
     ACC_INT1_SetLow();
     </code>
 
-*/
+ */
 #define ACC_INT1_SetLow()           ( LATACLR = (1 << 8) )
 
 /**
@@ -1217,18 +1205,16 @@ inline static void LED1_SetValue(bool value)
     ACC_INT1_SetValue(false);
     </code>
 
-*/
-inline static void ACC_INT1_SetValue(bool value)
-{
-  if(value)
-  {
-    ACC_INT1_SetHigh();
-  }
-  else
-  {
-    ACC_INT1_SetLow();
-  }
+ */
+inline static void ACC_INT1_SetValue(bool value) {
+    if (value) {
+        ACC_INT1_SetHigh();
+    } else {
+        ACC_INT1_SetLow();
+    }
 }
+
+#define PIN_ACC_INT1 PIN_A8
 
 /**
   @Summary
@@ -1252,7 +1238,7 @@ inline static void ACC_INT1_SetValue(bool value)
     ACC_INT1_Toggle();
     </code>
 
-*/
+ */
 #define ACC_INT1_Toggle()           ( LATAINV = (1 << 8) )
 /**
   @Summary
@@ -1278,7 +1264,7 @@ inline static void ACC_INT1_SetValue(bool value)
     postValue = ACC_INT1_GetValue();
     </code>
 
-*/
+ */
 #define ACC_INT1_GetValue()         PORTAbits.RA8
 /**
   @Summary
@@ -1302,7 +1288,7 @@ inline static void ACC_INT1_SetValue(bool value)
     ACC_INT1_SetDigitalInput();
     </code>
 
-*/
+ */
 #define ACC_INT1_SetDigitalInput()   ( TRISASET = (1 << 8) )
 /**
   @Summary
@@ -1326,7 +1312,7 @@ inline static void ACC_INT1_SetValue(bool value)
     ACC_INT1_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define ACC_INT1_SetDigitalOutput()   ( TRISACLR = (1 << 8) )
 /**
   @Summary
@@ -1350,7 +1336,7 @@ inline static void ACC_INT1_SetValue(bool value)
     UNO_MISO_SetHigh();
     </code>
 
-*/
+ */
 #define UNO_MISO_SetHigh()          ( LATASET = (1 << 9) )
 /**
   @Summary
@@ -1374,7 +1360,7 @@ inline static void ACC_INT1_SetValue(bool value)
     UNO_MISO_SetLow();
     </code>
 
-*/
+ */
 #define UNO_MISO_SetLow()           ( LATACLR = (1 << 9) )
 
 /**
@@ -1399,18 +1385,16 @@ inline static void ACC_INT1_SetValue(bool value)
     UNO_MISO_SetValue(false);
     </code>
 
-*/
-inline static void UNO_MISO_SetValue(bool value)
-{
-  if(value)
-  {
-    UNO_MISO_SetHigh();
-  }
-  else
-  {
-    UNO_MISO_SetLow();
-  }
+ */
+inline static void UNO_MISO_SetValue(bool value) {
+    if (value) {
+        UNO_MISO_SetHigh();
+    } else {
+        UNO_MISO_SetLow();
+    }
 }
+
+#define PIN_UNO_MISO PIN_A9
 
 /**
   @Summary
@@ -1434,7 +1418,7 @@ inline static void UNO_MISO_SetValue(bool value)
     UNO_MISO_Toggle();
     </code>
 
-*/
+ */
 #define UNO_MISO_Toggle()           ( LATAINV = (1 << 9) )
 /**
   @Summary
@@ -1460,7 +1444,7 @@ inline static void UNO_MISO_SetValue(bool value)
     postValue = UNO_MISO_GetValue();
     </code>
 
-*/
+ */
 #define UNO_MISO_GetValue()         PORTAbits.RA9
 /**
   @Summary
@@ -1484,7 +1468,7 @@ inline static void UNO_MISO_SetValue(bool value)
     UNO_MISO_SetDigitalInput();
     </code>
 
-*/
+ */
 #define UNO_MISO_SetDigitalInput()   ( TRISASET = (1 << 9) )
 /**
   @Summary
@@ -1508,7 +1492,7 @@ inline static void UNO_MISO_SetValue(bool value)
     UNO_MISO_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define UNO_MISO_SetDigitalOutput()   ( TRISACLR = (1 << 9) )
 /**
   @Summary
@@ -1532,7 +1516,7 @@ inline static void UNO_MISO_SetValue(bool value)
     VBAT_DIV_SetHigh();
     </code>
 
-*/
+ */
 #define VBAT_DIV_SetHigh()          ( LATBSET = (1 << 13) )
 /**
   @Summary
@@ -1556,7 +1540,7 @@ inline static void UNO_MISO_SetValue(bool value)
     VBAT_DIV_SetLow();
     </code>
 
-*/
+ */
 #define VBAT_DIV_SetLow()           ( LATBCLR = (1 << 13) )
 
 /**
@@ -1581,18 +1565,16 @@ inline static void UNO_MISO_SetValue(bool value)
     VBAT_DIV_SetValue(false);
     </code>
 
-*/
-inline static void VBAT_DIV_SetValue(bool value)
-{
-  if(value)
-  {
-    VBAT_DIV_SetHigh();
-  }
-  else
-  {
-    VBAT_DIV_SetLow();
-  }
+ */
+inline static void VBAT_DIV_SetValue(bool value) {
+    if (value) {
+        VBAT_DIV_SetHigh();
+    } else {
+        VBAT_DIV_SetLow();
+    }
 }
+
+#define PIN_VBAT_DIV PIN_B13
 
 /**
   @Summary
@@ -1616,7 +1598,7 @@ inline static void VBAT_DIV_SetValue(bool value)
     VBAT_DIV_Toggle();
     </code>
 
-*/
+ */
 #define VBAT_DIV_Toggle()           ( LATBINV = (1 << 13) )
 /**
   @Summary
@@ -1642,7 +1624,7 @@ inline static void VBAT_DIV_SetValue(bool value)
     postValue = VBAT_DIV_GetValue();
     </code>
 
-*/
+ */
 #define VBAT_DIV_GetValue()         PORTBbits.RB13
 /**
   @Summary
@@ -1666,7 +1648,7 @@ inline static void VBAT_DIV_SetValue(bool value)
     VBAT_DIV_SetDigitalInput();
     </code>
 
-*/
+ */
 #define VBAT_DIV_SetDigitalInput()   ( TRISBSET = (1 << 13) )
 /**
   @Summary
@@ -1690,7 +1672,7 @@ inline static void VBAT_DIV_SetValue(bool value)
     VBAT_DIV_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define VBAT_DIV_SetDigitalOutput()   ( TRISBCLR = (1 << 13) )
 /**
   @Summary
@@ -1714,7 +1696,7 @@ inline static void VBAT_DIV_SetValue(bool value)
     CELL_RING_SetHigh();
     </code>
 
-*/
+ */
 #define CELL_RING_SetHigh()          ( LATBSET = (1 << 14) )
 /**
   @Summary
@@ -1738,7 +1720,7 @@ inline static void VBAT_DIV_SetValue(bool value)
     CELL_RING_SetLow();
     </code>
 
-*/
+ */
 #define CELL_RING_SetLow()           ( LATBCLR = (1 << 14) )
 
 /**
@@ -1763,18 +1745,16 @@ inline static void VBAT_DIV_SetValue(bool value)
     CELL_RING_SetValue(false);
     </code>
 
-*/
-inline static void CELL_RING_SetValue(bool value)
-{
-  if(value)
-  {
-    CELL_RING_SetHigh();
-  }
-  else
-  {
-    CELL_RING_SetLow();
-  }
+ */
+inline static void CELL_RING_SetValue(bool value) {
+    if (value) {
+        CELL_RING_SetHigh();
+    } else {
+        CELL_RING_SetLow();
+    }
 }
+
+#define PIN_CELL_RING PIN_B14
 
 /**
   @Summary
@@ -1798,7 +1778,7 @@ inline static void CELL_RING_SetValue(bool value)
     CELL_RING_Toggle();
     </code>
 
-*/
+ */
 #define CELL_RING_Toggle()           ( LATBINV = (1 << 14) )
 /**
   @Summary
@@ -1824,7 +1804,7 @@ inline static void CELL_RING_SetValue(bool value)
     postValue = CELL_RING_GetValue();
     </code>
 
-*/
+ */
 #define CELL_RING_GetValue()         PORTBbits.RB14
 /**
   @Summary
@@ -1848,7 +1828,7 @@ inline static void CELL_RING_SetValue(bool value)
     CELL_RING_SetDigitalInput();
     </code>
 
-*/
+ */
 #define CELL_RING_SetDigitalInput()   ( TRISBSET = (1 << 14) )
 /**
   @Summary
@@ -1872,7 +1852,7 @@ inline static void CELL_RING_SetValue(bool value)
     CELL_RING_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define CELL_RING_SetDigitalOutput()   ( TRISBCLR = (1 << 14) )
 /**
   @Summary
@@ -1896,7 +1876,7 @@ inline static void CELL_RING_SetValue(bool value)
     TEMP_INT_SetHigh();
     </code>
 
-*/
+ */
 #define TEMP_INT_SetHigh()          ( LATBSET = (1 << 15) )
 /**
   @Summary
@@ -1920,7 +1900,7 @@ inline static void CELL_RING_SetValue(bool value)
     TEMP_INT_SetLow();
     </code>
 
-*/
+ */
 #define TEMP_INT_SetLow()           ( LATBCLR = (1 << 15) )
 
 /**
@@ -1945,18 +1925,16 @@ inline static void CELL_RING_SetValue(bool value)
     TEMP_INT_SetValue(false);
     </code>
 
-*/
-inline static void TEMP_INT_SetValue(bool value)
-{
-  if(value)
-  {
-    TEMP_INT_SetHigh();
-  }
-  else
-  {
-    TEMP_INT_SetLow();
-  }
+ */
+inline static void TEMP_INT_SetValue(bool value) {
+    if (value) {
+        TEMP_INT_SetHigh();
+    } else {
+        TEMP_INT_SetLow();
+    }
 }
+
+#define PIN_TEMP_INT PIN_B15
 
 /**
   @Summary
@@ -1980,7 +1958,7 @@ inline static void TEMP_INT_SetValue(bool value)
     TEMP_INT_Toggle();
     </code>
 
-*/
+ */
 #define TEMP_INT_Toggle()           ( LATBINV = (1 << 15) )
 /**
   @Summary
@@ -2006,7 +1984,7 @@ inline static void TEMP_INT_SetValue(bool value)
     postValue = TEMP_INT_GetValue();
     </code>
 
-*/
+ */
 #define TEMP_INT_GetValue()         PORTBbits.RB15
 /**
   @Summary
@@ -2030,7 +2008,7 @@ inline static void TEMP_INT_SetValue(bool value)
     TEMP_INT_SetDigitalInput();
     </code>
 
-*/
+ */
 #define TEMP_INT_SetDigitalInput()   ( TRISBSET = (1 << 15) )
 /**
   @Summary
@@ -2054,7 +2032,7 @@ inline static void TEMP_INT_SetValue(bool value)
     TEMP_INT_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define TEMP_INT_SetDigitalOutput()   ( TRISBCLR = (1 << 15) )
 /**
   @Summary
@@ -2078,7 +2056,7 @@ inline static void TEMP_INT_SetValue(bool value)
     UNO_MOSI_SetHigh();
     </code>
 
-*/
+ */
 #define UNO_MOSI_SetHigh()          ( LATBSET = (1 << 5) )
 /**
   @Summary
@@ -2102,7 +2080,7 @@ inline static void TEMP_INT_SetValue(bool value)
     UNO_MOSI_SetLow();
     </code>
 
-*/
+ */
 #define UNO_MOSI_SetLow()           ( LATBCLR = (1 << 5) )
 
 /**
@@ -2127,18 +2105,16 @@ inline static void TEMP_INT_SetValue(bool value)
     UNO_MOSI_SetValue(false);
     </code>
 
-*/
-inline static void UNO_MOSI_SetValue(bool value)
-{
-  if(value)
-  {
-    UNO_MOSI_SetHigh();
-  }
-  else
-  {
-    UNO_MOSI_SetLow();
-  }
+ */
+inline static void UNO_MOSI_SetValue(bool value) {
+    if (value) {
+        UNO_MOSI_SetHigh();
+    } else {
+        UNO_MOSI_SetLow();
+    }
 }
+
+#define PIN_UNO_MOSI PIN_B5
 
 /**
   @Summary
@@ -2162,7 +2138,7 @@ inline static void UNO_MOSI_SetValue(bool value)
     UNO_MOSI_Toggle();
     </code>
 
-*/
+ */
 #define UNO_MOSI_Toggle()           ( LATBINV = (1 << 5) )
 /**
   @Summary
@@ -2188,7 +2164,7 @@ inline static void UNO_MOSI_SetValue(bool value)
     postValue = UNO_MOSI_GetValue();
     </code>
 
-*/
+ */
 #define UNO_MOSI_GetValue()         PORTBbits.RB5
 /**
   @Summary
@@ -2212,7 +2188,7 @@ inline static void UNO_MOSI_SetValue(bool value)
     UNO_MOSI_SetDigitalInput();
     </code>
 
-*/
+ */
 #define UNO_MOSI_SetDigitalInput()   ( TRISBSET = (1 << 5) )
 /**
   @Summary
@@ -2236,7 +2212,7 @@ inline static void UNO_MOSI_SetValue(bool value)
     UNO_MOSI_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define UNO_MOSI_SetDigitalOutput()   ( TRISBCLR = (1 << 5) )
 /**
   @Summary
@@ -2260,7 +2236,7 @@ inline static void UNO_MOSI_SetValue(bool value)
     UNO_SCLK_SetHigh();
     </code>
 
-*/
+ */
 #define UNO_SCLK_SetHigh()          ( LATBSET = (1 << 7) )
 /**
   @Summary
@@ -2284,7 +2260,7 @@ inline static void UNO_MOSI_SetValue(bool value)
     UNO_SCLK_SetLow();
     </code>
 
-*/
+ */
 #define UNO_SCLK_SetLow()           ( LATBCLR = (1 << 7) )
 
 /**
@@ -2309,19 +2285,16 @@ inline static void UNO_MOSI_SetValue(bool value)
     UNO_SCLK_SetValue(false);
     </code>
 
-*/
-inline static void UNO_SCLK_SetValue(bool value)
-{
-  if(value)
-  {
-    UNO_SCLK_SetHigh();
-  }
-  else
-  {
-    UNO_SCLK_SetLow();
-  }
+ */
+inline static void UNO_SCLK_SetValue(bool value) {
+    if (value) {
+        UNO_SCLK_SetHigh();
+    } else {
+        UNO_SCLK_SetLow();
+    }
 }
 
+#define PIN_UNO_SCLK PIN_B7
 /**
   @Summary
     Toggles the GPIO pin, RB7, using LATB7.
@@ -2344,7 +2317,7 @@ inline static void UNO_SCLK_SetValue(bool value)
     UNO_SCLK_Toggle();
     </code>
 
-*/
+ */
 #define UNO_SCLK_Toggle()           ( LATBINV = (1 << 7) )
 /**
   @Summary
@@ -2370,7 +2343,7 @@ inline static void UNO_SCLK_SetValue(bool value)
     postValue = UNO_SCLK_GetValue();
     </code>
 
-*/
+ */
 #define UNO_SCLK_GetValue()         PORTBbits.RB7
 /**
   @Summary
@@ -2394,7 +2367,7 @@ inline static void UNO_SCLK_SetValue(bool value)
     UNO_SCLK_SetDigitalInput();
     </code>
 
-*/
+ */
 #define UNO_SCLK_SetDigitalInput()   ( TRISBSET = (1 << 7) )
 /**
   @Summary
@@ -2418,7 +2391,7 @@ inline static void UNO_SCLK_SetValue(bool value)
     UNO_SCLK_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define UNO_SCLK_SetDigitalOutput()   ( TRISBCLR = (1 << 7) )
 /**
   @Summary
@@ -2442,7 +2415,7 @@ inline static void UNO_SCLK_SetValue(bool value)
     UNO_AN1_SetHigh();
     </code>
 
-*/
+ */
 #define UNO_AN1_SetHigh()          ( LATCSET = (1 << 0) )
 /**
   @Summary
@@ -2466,7 +2439,7 @@ inline static void UNO_SCLK_SetValue(bool value)
     UNO_AN1_SetLow();
     </code>
 
-*/
+ */
 #define UNO_AN1_SetLow()           ( LATCCLR = (1 << 0) )
 
 /**
@@ -2491,19 +2464,16 @@ inline static void UNO_SCLK_SetValue(bool value)
     UNO_AN1_SetValue(false);
     </code>
 
-*/
-inline static void UNO_AN1_SetValue(bool value)
-{
-  if(value)
-  {
-    UNO_AN1_SetHigh();
-  }
-  else
-  {
-    UNO_AN1_SetLow();
-  }
+ */
+inline static void UNO_AN1_SetValue(bool value) {
+    if (value) {
+        UNO_AN1_SetHigh();
+    } else {
+        UNO_AN1_SetLow();
+    }
 }
 
+#define PIN_UNO_AN1 PIN_C0
 /**
   @Summary
     Toggles the GPIO pin, RC0, using LATC0.
@@ -2526,7 +2496,7 @@ inline static void UNO_AN1_SetValue(bool value)
     UNO_AN1_Toggle();
     </code>
 
-*/
+ */
 #define UNO_AN1_Toggle()           ( LATCINV = (1 << 0) )
 /**
   @Summary
@@ -2552,7 +2522,7 @@ inline static void UNO_AN1_SetValue(bool value)
     postValue = UNO_AN1_GetValue();
     </code>
 
-*/
+ */
 #define UNO_AN1_GetValue()         PORTCbits.RC0
 /**
   @Summary
@@ -2576,7 +2546,7 @@ inline static void UNO_AN1_SetValue(bool value)
     UNO_AN1_SetDigitalInput();
     </code>
 
-*/
+ */
 #define UNO_AN1_SetDigitalInput()   ( TRISCSET = (1 << 0) )
 /**
   @Summary
@@ -2600,7 +2570,7 @@ inline static void UNO_AN1_SetValue(bool value)
     UNO_AN1_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define UNO_AN1_SetDigitalOutput()   ( TRISCCLR = (1 << 0) )
 /**
   @Summary
@@ -2624,7 +2594,7 @@ inline static void UNO_AN1_SetValue(bool value)
     UNO_AN2_SetHigh();
     </code>
 
-*/
+ */
 #define UNO_AN2_SetHigh()          ( LATCSET = (1 << 1) )
 /**
   @Summary
@@ -2648,7 +2618,7 @@ inline static void UNO_AN1_SetValue(bool value)
     UNO_AN2_SetLow();
     </code>
 
-*/
+ */
 #define UNO_AN2_SetLow()           ( LATCCLR = (1 << 1) )
 
 /**
@@ -2673,19 +2643,16 @@ inline static void UNO_AN1_SetValue(bool value)
     UNO_AN2_SetValue(false);
     </code>
 
-*/
-inline static void UNO_AN2_SetValue(bool value)
-{
-  if(value)
-  {
-    UNO_AN2_SetHigh();
-  }
-  else
-  {
-    UNO_AN2_SetLow();
-  }
+ */
+inline static void UNO_AN2_SetValue(bool value) {
+    if (value) {
+        UNO_AN2_SetHigh();
+    } else {
+        UNO_AN2_SetLow();
+    }
 }
 
+#define PIN_UNO_AN2 PIN_C1
 /**
   @Summary
     Toggles the GPIO pin, RC1, using LATC1.
@@ -2708,7 +2675,7 @@ inline static void UNO_AN2_SetValue(bool value)
     UNO_AN2_Toggle();
     </code>
 
-*/
+ */
 #define UNO_AN2_Toggle()           ( LATCINV = (1 << 1) )
 /**
   @Summary
@@ -2734,7 +2701,7 @@ inline static void UNO_AN2_SetValue(bool value)
     postValue = UNO_AN2_GetValue();
     </code>
 
-*/
+ */
 #define UNO_AN2_GetValue()         PORTCbits.RC1
 /**
   @Summary
@@ -2758,7 +2725,7 @@ inline static void UNO_AN2_SetValue(bool value)
     UNO_AN2_SetDigitalInput();
     </code>
 
-*/
+ */
 #define UNO_AN2_SetDigitalInput()   ( TRISCSET = (1 << 1) )
 /**
   @Summary
@@ -2782,7 +2749,7 @@ inline static void UNO_AN2_SetValue(bool value)
     UNO_AN2_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define UNO_AN2_SetDigitalOutput()   ( TRISCCLR = (1 << 1) )
 /**
   @Summary
@@ -2806,7 +2773,7 @@ inline static void UNO_AN2_SetValue(bool value)
     CELL_PWR_EN_SetHigh();
     </code>
 
-*/
+ */
 #define CELL_PWR_EN_SetHigh()          ( LATCSET = (1 << 12) )
 /**
   @Summary
@@ -2830,7 +2797,7 @@ inline static void UNO_AN2_SetValue(bool value)
     CELL_PWR_EN_SetLow();
     </code>
 
-*/
+ */
 #define CELL_PWR_EN_SetLow()           ( LATCCLR = (1 << 12) )
 
 /**
@@ -2855,18 +2822,16 @@ inline static void UNO_AN2_SetValue(bool value)
     CELL_PWR_EN_SetValue(false);
     </code>
 
-*/
-inline static void CELL_PWR_EN_SetValue(bool value)
-{
-  if(value)
-  {
-    CELL_PWR_EN_SetHigh();
-  }
-  else
-  {
-    CELL_PWR_EN_SetLow();
-  }
+ */
+inline static void CELL_PWR_EN_SetValue(bool value) {
+    if (value) {
+        CELL_PWR_EN_SetHigh();
+    } else {
+        CELL_PWR_EN_SetLow();
+    }
 }
+
+#define PIN_CELL_PWR_EN PIN_C12
 
 /**
   @Summary
@@ -2890,7 +2855,7 @@ inline static void CELL_PWR_EN_SetValue(bool value)
     CELL_PWR_EN_Toggle();
     </code>
 
-*/
+ */
 #define CELL_PWR_EN_Toggle()           ( LATCINV = (1 << 12) )
 /**
   @Summary
@@ -2916,7 +2881,7 @@ inline static void CELL_PWR_EN_SetValue(bool value)
     postValue = CELL_PWR_EN_GetValue();
     </code>
 
-*/
+ */
 #define CELL_PWR_EN_GetValue()         PORTCbits.RC12
 /**
   @Summary
@@ -2940,7 +2905,7 @@ inline static void CELL_PWR_EN_SetValue(bool value)
     CELL_PWR_EN_SetDigitalInput();
     </code>
 
-*/
+ */
 #define CELL_PWR_EN_SetDigitalInput()   ( TRISCSET = (1 << 12) )
 /**
   @Summary
@@ -2964,7 +2929,7 @@ inline static void CELL_PWR_EN_SetValue(bool value)
     CELL_PWR_EN_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define CELL_PWR_EN_SetDigitalOutput()   ( TRISCCLR = (1 << 12) )
 /**
   @Summary
@@ -2988,7 +2953,7 @@ inline static void CELL_PWR_EN_SetValue(bool value)
     ACC_INT2_SetHigh();
     </code>
 
-*/
+ */
 #define ACC_INT2_SetHigh()          ( LATCSET = (1 << 2) )
 /**
   @Summary
@@ -3012,7 +2977,7 @@ inline static void CELL_PWR_EN_SetValue(bool value)
     ACC_INT2_SetLow();
     </code>
 
-*/
+ */
 #define ACC_INT2_SetLow()           ( LATCCLR = (1 << 2) )
 
 /**
@@ -3037,18 +3002,16 @@ inline static void CELL_PWR_EN_SetValue(bool value)
     ACC_INT2_SetValue(false);
     </code>
 
-*/
-inline static void ACC_INT2_SetValue(bool value)
-{
-  if(value)
-  {
-    ACC_INT2_SetHigh();
-  }
-  else
-  {
-    ACC_INT2_SetLow();
-  }
+ */
+inline static void ACC_INT2_SetValue(bool value) {
+    if (value) {
+        ACC_INT2_SetHigh();
+    } else {
+        ACC_INT2_SetLow();
+    }
 }
+
+#define PIN_ACC_INT2 PIN_C2
 
 /**
   @Summary
@@ -3072,7 +3035,7 @@ inline static void ACC_INT2_SetValue(bool value)
     ACC_INT2_Toggle();
     </code>
 
-*/
+ */
 #define ACC_INT2_Toggle()           ( LATCINV = (1 << 2) )
 /**
   @Summary
@@ -3098,7 +3061,7 @@ inline static void ACC_INT2_SetValue(bool value)
     postValue = ACC_INT2_GetValue();
     </code>
 
-*/
+ */
 #define ACC_INT2_GetValue()         PORTCbits.RC2
 /**
   @Summary
@@ -3122,7 +3085,7 @@ inline static void ACC_INT2_SetValue(bool value)
     ACC_INT2_SetDigitalInput();
     </code>
 
-*/
+ */
 #define ACC_INT2_SetDigitalInput()   ( TRISCSET = (1 << 2) )
 /**
   @Summary
@@ -3146,7 +3109,7 @@ inline static void ACC_INT2_SetValue(bool value)
     ACC_INT2_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define ACC_INT2_SetDigitalOutput()   ( TRISCCLR = (1 << 2) )
 /**
   @Summary
@@ -3170,7 +3133,7 @@ inline static void ACC_INT2_SetValue(bool value)
     UNO_INT1_SetHigh();
     </code>
 
-*/
+ */
 #define UNO_INT1_SetHigh()          ( LATCSET = (1 << 3) )
 /**
   @Summary
@@ -3194,7 +3157,7 @@ inline static void ACC_INT2_SetValue(bool value)
     UNO_INT1_SetLow();
     </code>
 
-*/
+ */
 #define UNO_INT1_SetLow()           ( LATCCLR = (1 << 3) )
 
 /**
@@ -3219,18 +3182,16 @@ inline static void ACC_INT2_SetValue(bool value)
     UNO_INT1_SetValue(false);
     </code>
 
-*/
-inline static void UNO_INT1_SetValue(bool value)
-{
-  if(value)
-  {
-    UNO_INT1_SetHigh();
-  }
-  else
-  {
-    UNO_INT1_SetLow();
-  }
+ */
+inline static void UNO_INT1_SetValue(bool value) {
+    if (value) {
+        UNO_INT1_SetHigh();
+    } else {
+        UNO_INT1_SetLow();
+    }
 }
+
+#define PIN_UNO_INT1 PIN_C3
 
 /**
   @Summary
@@ -3254,7 +3215,7 @@ inline static void UNO_INT1_SetValue(bool value)
     UNO_INT1_Toggle();
     </code>
 
-*/
+ */
 #define UNO_INT1_Toggle()           ( LATCINV = (1 << 3) )
 /**
   @Summary
@@ -3280,7 +3241,7 @@ inline static void UNO_INT1_SetValue(bool value)
     postValue = UNO_INT1_GetValue();
     </code>
 
-*/
+ */
 #define UNO_INT1_GetValue()         PORTCbits.RC3
 /**
   @Summary
@@ -3304,7 +3265,7 @@ inline static void UNO_INT1_SetValue(bool value)
     UNO_INT1_SetDigitalInput();
     </code>
 
-*/
+ */
 #define UNO_INT1_SetDigitalInput()   ( TRISCSET = (1 << 3) )
 /**
   @Summary
@@ -3328,7 +3289,7 @@ inline static void UNO_INT1_SetValue(bool value)
     UNO_INT1_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define UNO_INT1_SetDigitalOutput()   ( TRISCCLR = (1 << 3) )
 /**
   @Summary
@@ -3352,7 +3313,7 @@ inline static void UNO_INT1_SetValue(bool value)
     UNO_IO3_SetHigh();
     </code>
 
-*/
+ */
 #define UNO_IO3_SetHigh()          ( LATCSET = (1 << 4) )
 /**
   @Summary
@@ -3376,7 +3337,7 @@ inline static void UNO_INT1_SetValue(bool value)
     UNO_IO3_SetLow();
     </code>
 
-*/
+ */
 #define UNO_IO3_SetLow()           ( LATCCLR = (1 << 4) )
 
 /**
@@ -3401,18 +3362,16 @@ inline static void UNO_INT1_SetValue(bool value)
     UNO_IO3_SetValue(false);
     </code>
 
-*/
-inline static void UNO_IO3_SetValue(bool value)
-{
-  if(value)
-  {
-    UNO_IO3_SetHigh();
-  }
-  else
-  {
-    UNO_IO3_SetLow();
-  }
+ */
+inline static void UNO_IO3_SetValue(bool value) {
+    if (value) {
+        UNO_IO3_SetHigh();
+    } else {
+        UNO_IO3_SetLow();
+    }
 }
+
+#define PIN_UNO_IO3 PIN_C4
 
 /**
   @Summary
@@ -3436,7 +3395,7 @@ inline static void UNO_IO3_SetValue(bool value)
     UNO_IO3_Toggle();
     </code>
 
-*/
+ */
 #define UNO_IO3_Toggle()           ( LATCINV = (1 << 4) )
 /**
   @Summary
@@ -3462,7 +3421,7 @@ inline static void UNO_IO3_SetValue(bool value)
     postValue = UNO_IO3_GetValue();
     </code>
 
-*/
+ */
 #define UNO_IO3_GetValue()         PORTCbits.RC4
 /**
   @Summary
@@ -3486,7 +3445,7 @@ inline static void UNO_IO3_SetValue(bool value)
     UNO_IO3_SetDigitalInput();
     </code>
 
-*/
+ */
 #define UNO_IO3_SetDigitalInput()   ( TRISCSET = (1 << 4) )
 /**
   @Summary
@@ -3510,7 +3469,7 @@ inline static void UNO_IO3_SetValue(bool value)
     UNO_IO3_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define UNO_IO3_SetDigitalOutput()   ( TRISCCLR = (1 << 4) )
 /**
   @Summary
@@ -3534,7 +3493,7 @@ inline static void UNO_IO3_SetValue(bool value)
     UNO_INT0_SetHigh();
     </code>
 
-*/
+ */
 #define UNO_INT0_SetHigh()          ( LATCSET = (1 << 5) )
 /**
   @Summary
@@ -3558,7 +3517,7 @@ inline static void UNO_IO3_SetValue(bool value)
     UNO_INT0_SetLow();
     </code>
 
-*/
+ */
 #define UNO_INT0_SetLow()           ( LATCCLR = (1 << 5) )
 
 /**
@@ -3583,18 +3542,16 @@ inline static void UNO_IO3_SetValue(bool value)
     UNO_INT0_SetValue(false);
     </code>
 
-*/
-inline static void UNO_INT0_SetValue(bool value)
-{
-  if(value)
-  {
-    UNO_INT0_SetHigh();
-  }
-  else
-  {
-    UNO_INT0_SetLow();
-  }
+ */
+inline static void UNO_INT0_SetValue(bool value) {
+    if (value) {
+        UNO_INT0_SetHigh();
+    } else {
+        UNO_INT0_SetLow();
+    }
 }
+
+#define PIN_UNO_INT0 PIN_C5
 
 /**
   @Summary
@@ -3618,7 +3575,7 @@ inline static void UNO_INT0_SetValue(bool value)
     UNO_INT0_Toggle();
     </code>
 
-*/
+ */
 #define UNO_INT0_Toggle()           ( LATCINV = (1 << 5) )
 /**
   @Summary
@@ -3644,7 +3601,7 @@ inline static void UNO_INT0_SetValue(bool value)
     postValue = UNO_INT0_GetValue();
     </code>
 
-*/
+ */
 #define UNO_INT0_GetValue()         PORTCbits.RC5
 /**
   @Summary
@@ -3668,7 +3625,7 @@ inline static void UNO_INT0_SetValue(bool value)
     UNO_INT0_SetDigitalInput();
     </code>
 
-*/
+ */
 #define UNO_INT0_SetDigitalInput()   ( TRISCSET = (1 << 5) )
 /**
   @Summary
@@ -3692,7 +3649,7 @@ inline static void UNO_INT0_SetValue(bool value)
     UNO_INT0_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define UNO_INT0_SetDigitalOutput()   ( TRISCCLR = (1 << 5) )
 /**
   @Summary
@@ -3716,7 +3673,7 @@ inline static void UNO_INT0_SetValue(bool value)
     CELL_HWSDN_SetHigh();
     </code>
 
-*/
+ */
 #define CELL_HWSDN_SetHigh()          ( LATCSET = (1 << 8) )
 /**
   @Summary
@@ -3740,7 +3697,7 @@ inline static void UNO_INT0_SetValue(bool value)
     CELL_HWSDN_SetLow();
     </code>
 
-*/
+ */
 #define CELL_HWSDN_SetLow()           ( LATCCLR = (1 << 8) )
 
 /**
@@ -3765,18 +3722,16 @@ inline static void UNO_INT0_SetValue(bool value)
     CELL_HWSDN_SetValue(false);
     </code>
 
-*/
-inline static void CELL_HWSDN_SetValue(bool value)
-{
-  if(value)
-  {
-    CELL_HWSDN_SetHigh();
-  }
-  else
-  {
-    CELL_HWSDN_SetLow();
-  }
+ */
+inline static void CELL_HWSDN_SetValue(bool value) {
+    if (value) {
+        CELL_HWSDN_SetHigh();
+    } else {
+        CELL_HWSDN_SetLow();
+    }
 }
+
+#define PIN_CELL_HWSDN PIN_C8
 
 /**
   @Summary
@@ -3800,7 +3755,7 @@ inline static void CELL_HWSDN_SetValue(bool value)
     CELL_HWSDN_Toggle();
     </code>
 
-*/
+ */
 #define CELL_HWSDN_Toggle()           ( LATCINV = (1 << 8) )
 /**
   @Summary
@@ -3826,7 +3781,7 @@ inline static void CELL_HWSDN_SetValue(bool value)
     postValue = CELL_HWSDN_GetValue();
     </code>
 
-*/
+ */
 #define CELL_HWSDN_GetValue()         PORTCbits.RC8
 /**
   @Summary
@@ -3850,7 +3805,7 @@ inline static void CELL_HWSDN_SetValue(bool value)
     CELL_HWSDN_SetDigitalInput();
     </code>
 
-*/
+ */
 #define CELL_HWSDN_SetDigitalInput()   ( TRISCSET = (1 << 8) )
 /**
   @Summary
@@ -3874,7 +3829,7 @@ inline static void CELL_HWSDN_SetValue(bool value)
     CELL_HWSDN_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define CELL_HWSDN_SetDigitalOutput()   ( TRISCCLR = (1 << 8) )
 /**
   @Summary
@@ -3898,7 +3853,7 @@ inline static void CELL_HWSDN_SetValue(bool value)
     CELL_WDT_SetHigh();
     </code>
 
-*/
+ */
 #define CELL_WDT_SetHigh()          ( LATCSET = (1 << 9) )
 /**
   @Summary
@@ -3922,7 +3877,7 @@ inline static void CELL_HWSDN_SetValue(bool value)
     CELL_WDT_SetLow();
     </code>
 
-*/
+ */
 #define CELL_WDT_SetLow()           ( LATCCLR = (1 << 9) )
 
 /**
@@ -3947,18 +3902,16 @@ inline static void CELL_HWSDN_SetValue(bool value)
     CELL_WDT_SetValue(false);
     </code>
 
-*/
-inline static void CELL_WDT_SetValue(bool value)
-{
-  if(value)
-  {
-    CELL_WDT_SetHigh();
-  }
-  else
-  {
-    CELL_WDT_SetLow();
-  }
+ */
+inline static void CELL_WDT_SetValue(bool value) {
+    if (value) {
+        CELL_WDT_SetHigh();
+    } else {
+        CELL_WDT_SetLow();
+    }
 }
+
+#define PIN_CELL_WDT PIN_C9
 
 /**
   @Summary
@@ -3982,7 +3935,7 @@ inline static void CELL_WDT_SetValue(bool value)
     CELL_WDT_Toggle();
     </code>
 
-*/
+ */
 #define CELL_WDT_Toggle()           ( LATCINV = (1 << 9) )
 /**
   @Summary
@@ -4008,7 +3961,7 @@ inline static void CELL_WDT_SetValue(bool value)
     postValue = CELL_WDT_GetValue();
     </code>
 
-*/
+ */
 #define CELL_WDT_GetValue()         PORTCbits.RC9
 /**
   @Summary
@@ -4032,7 +3985,7 @@ inline static void CELL_WDT_SetValue(bool value)
     CELL_WDT_SetDigitalInput();
     </code>
 
-*/
+ */
 #define CELL_WDT_SetDigitalInput()   ( TRISCSET = (1 << 9) )
 /**
   @Summary
@@ -4056,7 +4009,7 @@ inline static void CELL_WDT_SetValue(bool value)
     CELL_WDT_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define CELL_WDT_SetDigitalOutput()   ( TRISCCLR = (1 << 9) )
 /**
   @Summary
@@ -4080,7 +4033,7 @@ inline static void CELL_WDT_SetValue(bool value)
     FLASH_CS_N_SetHigh();
     </code>
 
-*/
+ */
 #define FLASH_CS_N_SetHigh()          ( LATDSET = (1 << 0) )
 /**
   @Summary
@@ -4104,7 +4057,7 @@ inline static void CELL_WDT_SetValue(bool value)
     FLASH_CS_N_SetLow();
     </code>
 
-*/
+ */
 #define FLASH_CS_N_SetLow()           ( LATDCLR = (1 << 0) )
 
 /**
@@ -4129,18 +4082,16 @@ inline static void CELL_WDT_SetValue(bool value)
     FLASH_CS_N_SetValue(false);
     </code>
 
-*/
-inline static void FLASH_CS_N_SetValue(bool value)
-{
-  if(value)
-  {
-    FLASH_CS_N_SetHigh();
-  }
-  else
-  {
-    FLASH_CS_N_SetLow();
-  }
+ */
+inline static void FLASH_CS_N_SetValue(bool value) {
+    if (value) {
+        FLASH_CS_N_SetHigh();
+    } else {
+        FLASH_CS_N_SetLow();
+    }
 }
+
+#define PIN_FLASH_CS_N PIN_D0
 
 /**
   @Summary
@@ -4164,7 +4115,7 @@ inline static void FLASH_CS_N_SetValue(bool value)
     FLASH_CS_N_Toggle();
     </code>
 
-*/
+ */
 #define FLASH_CS_N_Toggle()           ( LATDINV = (1 << 0) )
 /**
   @Summary
@@ -4190,7 +4141,7 @@ inline static void FLASH_CS_N_SetValue(bool value)
     postValue = FLASH_CS_N_GetValue();
     </code>
 
-*/
+ */
 #define FLASH_CS_N_GetValue()         PORTDbits.RD0
 /**
   @Summary
@@ -4214,7 +4165,7 @@ inline static void FLASH_CS_N_SetValue(bool value)
     FLASH_CS_N_SetDigitalInput();
     </code>
 
-*/
+ */
 #define FLASH_CS_N_SetDigitalInput()   ( TRISDSET = (1 << 0) )
 /**
   @Summary
@@ -4238,12 +4189,12 @@ inline static void FLASH_CS_N_SetValue(bool value)
     FLASH_CS_N_SetDigitalOutput();
     </code>
 
-*/
+ */
 #define FLASH_CS_N_SetDigitalOutput()   ( TRISDCLR = (1 << 0) )
 
 /**
     Section: Function Prototypes
-*/
+ */
 /**
   @Summary
     Configures the pin settings of the PIC32MM0256GPM048
@@ -4272,8 +4223,8 @@ inline static void FLASH_CS_N_SetValue(bool value)
     }
     </code>
 
-*/
-void PIN_MANAGER_Initialize (void);
+ */
+void PIN_MANAGER_Initialize(void);
 
 /**
   @Summary
@@ -4293,7 +4244,7 @@ void PIN_MANAGER_Initialize (void);
     <code>
         LIGHT_INT_SetInterruptHandler(&LIGHT_INT_CallBack);
     </code>
-*/
+ */
 void LIGHT_INT_CallBack(void);
 
 /**
@@ -4314,7 +4265,7 @@ void LIGHT_INT_CallBack(void);
     <code>
         ACC_INT1_SetInterruptHandler(&ACC_INT1_CallBack);
     </code>
-*/
+ */
 void ACC_INT1_CallBack(void);
 
 /**
@@ -4335,7 +4286,7 @@ void ACC_INT1_CallBack(void);
     <code>
         TEMP_INT_SetInterruptHandler(&TEMP_INT_CallBack);
     </code>
-*/
+ */
 void TEMP_INT_CallBack(void);
 
 /**
@@ -4356,7 +4307,7 @@ void TEMP_INT_CallBack(void);
     <code>
         UNO_INT1_SetInterruptHandler(&UNO_INT1_CallBack);
     </code>
-*/
+ */
 void UNO_INT1_CallBack(void);
 
 /**
@@ -4377,7 +4328,7 @@ void UNO_INT1_CallBack(void);
     <code>
         ACC_INT2_SetInterruptHandler(&ACC_INT2_CallBack);
     </code>
-*/
+ */
 void ACC_INT2_CallBack(void);
 
 /**
@@ -4398,7 +4349,7 @@ void ACC_INT2_CallBack(void);
     <code>
         UNO_INT0_SetInterruptHandler(&UNO_INT0_CallBack);
     </code>
-*/
+ */
 void UNO_INT0_CallBack(void);
 
 
@@ -4419,7 +4370,7 @@ void UNO_INT0_CallBack(void);
     <code>
         LIGHT_INT_SetInterruptHandler(&LIGHT_INT_CallBack);
     </code>
-*/
+ */
 void LIGHT_INT_SetInterruptHandler(void (* InterruptHandler)(void));
 
 /**
@@ -4439,8 +4390,8 @@ void LIGHT_INT_SetInterruptHandler(void (* InterruptHandler)(void));
     <code>
         LIGHT_INT_SetIOCInterruptHandler(&LIGHT_INT_CallBack);
     </code>
-*/
-void __attribute__((deprecated("\nThis will be removed in future MCC releases. \nUse LIGHT_INT_SetInterruptHandler instead."))) LIGHT_INT_SetIOCInterruptHandler(void *handler);
+ */
+void LIGHT_INT_SetIOCInterruptHandler(void *handler);
 
 /**
   @Summary
@@ -4459,7 +4410,7 @@ void __attribute__((deprecated("\nThis will be removed in future MCC releases. \
     <code>
         ACC_INT1_SetInterruptHandler(&ACC_INT1_CallBack);
     </code>
-*/
+ */
 void ACC_INT1_SetInterruptHandler(void (* InterruptHandler)(void));
 
 /**
@@ -4479,8 +4430,8 @@ void ACC_INT1_SetInterruptHandler(void (* InterruptHandler)(void));
     <code>
         ACC_INT1_SetIOCInterruptHandler(&ACC_INT1_CallBack);
     </code>
-*/
-void __attribute__((deprecated("\nThis will be removed in future MCC releases. \nUse ACC_INT1_SetInterruptHandler instead."))) ACC_INT1_SetIOCInterruptHandler(void *handler);
+ */
+void ACC_INT1_SetIOCInterruptHandler(void *handler);
 
 /**
   @Summary
@@ -4499,7 +4450,7 @@ void __attribute__((deprecated("\nThis will be removed in future MCC releases. \
     <code>
         TEMP_INT_SetInterruptHandler(&TEMP_INT_CallBack);
     </code>
-*/
+ */
 void TEMP_INT_SetInterruptHandler(void (* InterruptHandler)(void));
 
 /**
@@ -4519,8 +4470,8 @@ void TEMP_INT_SetInterruptHandler(void (* InterruptHandler)(void));
     <code>
         TEMP_INT_SetIOCInterruptHandler(&TEMP_INT_CallBack);
     </code>
-*/
-void __attribute__((deprecated("\nThis will be removed in future MCC releases. \nUse TEMP_INT_SetInterruptHandler instead."))) TEMP_INT_SetIOCInterruptHandler(void *handler);
+ */
+void TEMP_INT_SetIOCInterruptHandler(void *handler);
 
 /**
   @Summary
@@ -4539,7 +4490,7 @@ void __attribute__((deprecated("\nThis will be removed in future MCC releases. \
     <code>
         UNO_INT1_SetInterruptHandler(&UNO_INT1_CallBack);
     </code>
-*/
+ */
 void UNO_INT1_SetInterruptHandler(void (* InterruptHandler)(void));
 
 /**
@@ -4559,8 +4510,8 @@ void UNO_INT1_SetInterruptHandler(void (* InterruptHandler)(void));
     <code>
         UNO_INT1_SetIOCInterruptHandler(&UNO_INT1_CallBack);
     </code>
-*/
-void __attribute__((deprecated("\nThis will be removed in future MCC releases. \nUse UNO_INT1_SetInterruptHandler instead."))) UNO_INT1_SetIOCInterruptHandler(void *handler);
+ */
+void UNO_INT1_SetIOCInterruptHandler(void *handler);
 
 /**
   @Summary
@@ -4579,7 +4530,7 @@ void __attribute__((deprecated("\nThis will be removed in future MCC releases. \
     <code>
         ACC_INT2_SetInterruptHandler(&ACC_INT2_CallBack);
     </code>
-*/
+ */
 void ACC_INT2_SetInterruptHandler(void (* InterruptHandler)(void));
 
 /**
@@ -4599,8 +4550,8 @@ void ACC_INT2_SetInterruptHandler(void (* InterruptHandler)(void));
     <code>
         ACC_INT2_SetIOCInterruptHandler(&ACC_INT2_CallBack);
     </code>
-*/
-void __attribute__((deprecated("\nThis will be removed in future MCC releases. \nUse ACC_INT2_SetInterruptHandler instead."))) ACC_INT2_SetIOCInterruptHandler(void *handler);
+ */
+void ACC_INT2_SetIOCInterruptHandler(void *handler);
 
 /**
   @Summary
@@ -4619,7 +4570,7 @@ void __attribute__((deprecated("\nThis will be removed in future MCC releases. \
     <code>
         UNO_INT0_SetInterruptHandler(&UNO_INT0_CallBack);
     </code>
-*/
+ */
 void UNO_INT0_SetInterruptHandler(void (* InterruptHandler)(void));
 
 /**
@@ -4639,8 +4590,8 @@ void UNO_INT0_SetInterruptHandler(void (* InterruptHandler)(void));
     <code>
         UNO_INT0_SetIOCInterruptHandler(&UNO_INT0_CallBack);
     </code>
-*/
-void __attribute__((deprecated("\nThis will be removed in future MCC releases. \nUse UNO_INT0_SetInterruptHandler instead."))) UNO_INT0_SetIOCInterruptHandler(void *handler);
+ */
+void UNO_INT0_SetIOCInterruptHandler(void *handler);
 
 
 #endif

@@ -1,12 +1,11 @@
 #include "VCP.h"
 #include "VCP_Debug.h"
-#include "Common/TinyPrintf.h"
 
 private uint8_t CdcPortIdx=0;
 private port_txbuf_t VcpDbgTxBuf={.next=0};
 private port_rxbuf_t VcpDbgRxBuf;
 
-public void debug_port_write(uint8_t c) // <editor-fold defaultstate="collapsed" desc="Debug write a byte">
+public void VCP_Debug_Write(uint8_t c) // <editor-fold defaultstate="collapsed" desc="Debug write a byte">
 {
     Tick_Timer_Reset(VcpDbgTxBuf.tk);
 
@@ -85,10 +84,10 @@ private new_simple_task_t(VCP_Debug_Tasks) // <editor-fold defaultstate="collaps
     Task_Done();
 } // </editor-fold>
 
-public void VCP_Debug_SetRxCallback(void (*cbfnc)(uint8_t *))
+public void VCP_Debug_SetRxCallback(void (*cbfnc)(uint8_t *)) // <editor-fold defaultstate="collapsed" desc="VCP Debug set RX callback">
 {
     VcpDbgRxBuf.cbfnc=cbfnc;
-}
+} // </editor-fold>
 
 private void DTRPinHandler(char logic) // <editor-fold defaultstate="collapsed" desc="DTR pin handler">
 {
@@ -98,10 +97,10 @@ private void DTRPinHandler(char logic) // <editor-fold defaultstate="collapsed" 
         VcpDbgTxBuf.ready=0;
 } // </editor-fold>
 
-public void VCP_Debug_Init(uint8_t PortIdx)
+public void VCP_Debug_Init(uint8_t PortIdx) // <editor-fold defaultstate="collapsed" desc="VCP debug initialize">
 {
     CdcPortIdx=PortIdx;
     VcpDbgTxBuf.next=0;
     DTRPin_SetHandler(CdcPortIdx, DTRPinHandler);
     TaskManager_Create_NewSimpleTask(VCP_Debug_Tasks);
-}
+} // </editor-fold>

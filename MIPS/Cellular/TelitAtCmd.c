@@ -3,7 +3,7 @@
 #include "System/TickTimer.h"
 
 #ifdef USE_ATCMD_DEBUG
-#include "Common/TinyPrintf.h"
+#include "Common/Debug.h"
 #else
 #define __dbs(...)
 #define __dbc(...)
@@ -11,17 +11,18 @@
 #endif
 
 /* ******************************************************* External variables */
-#ifdef ATCMD_USE_DYNAMIC_PORT
-atcmdport_cxt_t AtPort={NULL, NULL, NULL, NULL, NULL};
-#endif
 /* ********************************************************** Local variables */
 
 // Response constants
 const char RES_OK[]="\r\nOK\r\n";
 const char RES_ERROR[]="\r\nERROR\r\n";
+static uint8_t AtCmdData[ATCMD_BUFFER_SIZE];
 
-uint8_t AtCmdData[ATCMD_BUFFER_SIZE];
-buff_t AtCmdRxBuff;
+buff_t AtCmdRxBuff={
+    .Len=0,
+    .Size=ATCMD_BUFFER_SIZE,
+    .pData=AtCmdData
+};
 
 static size_t RxCount=0;
 static uint8_t ReTry=0;
@@ -378,7 +379,7 @@ int8_t ATCMD_GetAck(const char *pAck, const char *pNAck, uint16_t firstWait, uin
     return rslt;
 }
 
-int8_t ATCMD_Test(uint8_t tryCount)
+int8_t __ATCMD_Test(uint8_t tryCount)
 {
     int8_t rslt;
     uint8_t type=tryCount&0xC0;

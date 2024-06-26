@@ -1,9 +1,9 @@
-#include "Apps/AppMain.h"
+#include "User/AppMain.h"
 
 static const char HwInfo[]={
-    "\n\nWEATHER STATION"
-    "\nHARDWARE : HWZ012_REV0.0"
-    "\nPCB      : PCB.Y146-3908731A"
+    "\n\nARDI V2"
+    "\nHARDWARE : DRM02.ARDI-xE910"
+    "\nPCB      : PCB.HWP070-V2.01_1021"
     "\nBUILD    : " __TIME__ "-" __DATE__
     "\nCLOCK    : " __make_xstr(_XTAL_FREQ) " Hz"
 };
@@ -73,7 +73,7 @@ int main(void) // <editor-fold defaultstate="collapsed" desc="Main function">
     Tick_Timer_Init();
     TaskManager_Init();
     Indicator_Init();
-    softWDT_Init(4, PIN_A7, NULL);
+    softWDT_Init(4, PIN_LED1, NULL);
     USB_Device_LoadUDID(udID);
     USBDeviceInit();
     USBDeviceAttach();

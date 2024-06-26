@@ -70,8 +70,8 @@ void ADC1_Initialize (void)
     AD1CHS = 0x00;
     // CSS9 disabled; CSS8 disabled; CSS7 disabled; CSS6 disabled; CSS5 disabled; CSS4 disabled; CSS3 disabled; CSS2 disabled; CSS15 disabled; CSS1 disabled; CSS14 disabled; CSS0 disabled; CSS13 disabled; CSS12 disabled; CSS11 disabled; CSS10 disabled; CSS30 disabled; CSS29 disabled; CSS28 disabled; CSS27 disabled; 
     AD1CSS = 0x00;
-    // ASEN disabled; WM Legacy operation; ASINT No interrupt; CM Less Than mode; BGREQ disabled; LPEN Full power; 
-    AD1CON5 = 0x00;
+    // ASEN disabled; WM Legacy operation; ASINT No interrupt; CM Less Than mode; BGREQ enabled; LPEN Full power; 
+    AD1CON5 = 0x1000;
     // CHH9 disabled; CHH8 disabled; CHH7 disabled; CHH6 disabled; CHH5 disabled; CHH4 disabled; CHH3 disabled; CHH2 disabled; CHH1 disabled; CHH0 disabled; CHH11 disabled; CHH10 disabled; CHH13 disabled; CHH12 disabled; CHH15 disabled; CHH14 disabled; 
     AD1CHIT = 0x00;
     

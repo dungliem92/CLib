@@ -84,17 +84,17 @@
 #include "clock.h"
 #include "system.h"
 #include "usb/usb.h"
-#include "i2c1.h"
+#include "drivers/spi_master.h"
 #include "memory/flash.h"
+#include "adc1.h"
+#include "coretimer.h"
 #include "i2c2.h"
+#include "i2c1.h"
+#include "uart2.h"
 #include "interrupt_manager.h"
 #include "exceptions.h"
-#include "spi2_driver.h"
-#include "coretimer.h"
-#include "drivers/spi_master.h"
-#include "uart2.h"
 #include "uart3.h"
-#include "adc1.h"
+#include "spi2_driver.h"
 
 void SYSTEM_Initialize(void)
 {

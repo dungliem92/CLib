@@ -92,14 +92,14 @@ extern sem_declare_t(debug);
 #define __tsdbsdate(str, tcxt)      sem_wait(debug, dbsdate((const char *)str, tcxt, 1))
 #define __tsdbsdata(str, pd, len)   sem_wait(debug, dbsdata((const char *)str, pd, len, 1))
 // Debug for task-functions
-#define __tsdbs_t(str)              sem_wait(debug, debug((const char *)(str), 1))
-#define __tsdbsi_t(str, x)          sem_wait(debug, dbsi((const char *)str, x, 1))
-#define __tsdbsu_t(str, x)          sem_wait(debug, dbsu((const char *)str, x, 1))
-#define __tsdbsh_t(str, x)          sem_wait(debug, dbsh((const char *)str, x, 1))
-#define __tsdbsc_t(str, c)          sem_wait(debug, dbsc((const char *)str, c, 1))
-#define __tsdbss_t(str1, str2)      sem_wait(debug, dbss((const char *)str1, (const char *)str2, 1))
-#define __tsdbstime_t(str, tcxt)    sem_wait(debug, dbstime((const char *)str, tcxt, 1))
-#define __tsdbsdate_t(str, tcxt)    sem_wait(debug, dbsdate((const char *)str, tcxt, 1))
-#define __tsdbsdata_t(str, pd, len) sem_wait(debug, dbsdata((const char *)str, pd, len, 1))
+#define __tsdbs_t(str)              mutex_lock(debug, debug((const char *)(str), 1))
+#define __tsdbsi_t(str, x)          mutex_lock(debug, dbsi((const char *)str, x, 1))
+#define __tsdbsu_t(str, x)          mutex_lock(debug, dbsu((const char *)str, x, 1))
+#define __tsdbsh_t(str, x)          mutex_lock(debug, dbsh((const char *)str, x, 1))
+#define __tsdbsc_t(str, c)          mutex_lock(debug, dbsc((const char *)str, c, 1))
+#define __tsdbss_t(str1, str2)      mutex_lock(debug, dbss((const char *)str1, (const char *)str2, 1))
+#define __tsdbstime_t(str, tcxt)    mutex_lock(debug, dbstime((const char *)str, tcxt, 1))
+#define __tsdbsdate_t(str, tcxt)    mutex_lock(debug, dbsdate((const char *)str, tcxt, 1))
+#define __tsdbsdata_t(str, pd, len) mutex_lock(debug, dbsdata((const char *)str, pd, len, 1))
 
 #endif

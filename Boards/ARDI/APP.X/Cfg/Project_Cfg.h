@@ -32,14 +32,15 @@
 #include "usb/usb_device.h"
 #include "watchdog.h"
 #endif
-/* ************************************************************** CLIB CONFIG */
-
-#ifndef __LANGUAGE_ASSEMBLY__
-
-#endif
+/* *********************************************************** RPC LIB CONFIG */
 // SST25xx Cfg
 #define USE_SST25PF040C
-
+// TelitAtCmd Cfg
+#define ATCMD_BUFFER_SIZE   512
+// TelitPwrCtrl Cfg
+//#define USE_TELITPWRCTRL_DEBUG
+// TelitAtCMD Cfg
+//#define USE_ATCMD_DEBUG
 /* ************************************************************ COMMON MACROS */
 // Global interrupt
 #define Disable_Global_Interrupt()      __builtin_disable_interrupts()

@@ -156,10 +156,10 @@ state according to the definition in the USB specification.
 /** INCLUDES *******************************************************/
 #include "usb.h"
 #include "usb_device_cdc.h"
-#include "Common/UserFunctions.h"
+#include "Common/Utils.h"
 
 #if(0)
-#include "Common/TinyPrintf.h"
+#include "Common/Debug.h"
 #else
 #define __dbsh(...)
 #endif

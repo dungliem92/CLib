@@ -1,5 +1,5 @@
-#ifndef USERFUNCTIONS_H
-#define USERFUNCTIONS_H
+#ifndef UTILS_H
+#define UTILS_H
 
 #include "Common/LibDef.h"
 

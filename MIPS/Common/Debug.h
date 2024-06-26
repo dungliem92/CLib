@@ -6,7 +6,7 @@
 #include "System/TickTimer.h"
 #include "System/TaskManager.h"
 
-#define HEX_HEADER                  0x80
+#define HEX_HEADER 0x80
 
 typedef struct {
     bool (*IsTxReady)(void);
@@ -14,7 +14,7 @@ typedef struct {
     void (*Write)(uint8_t);
 } dbg_port_cxt_t;
 
-void debug_port_write(uint8_t c);
+void debug_port_write(uint8_t c); // Defined in TynyPrintf_Cfg.h
 void debug_systime_stamp(void);
 void debug(const char *str, bool tsEn);
 /* debug_hex(b, dgcount): display b as hex format 0xABC... or ABC...
@@ -24,6 +24,7 @@ void debug(const char *str, bool tsEn);
  */
 void debug_hex(uint32_t b, uint8_t dgcount);
 void debug_hexs(uint8_t *pD, int len);
+void debug_hexf(const uint8_t *pSource, int Size, int NumOfCol);
 void debug_i32(int32_t b);
 void debug_u32(uint32_t b);
 void debug_data(uint8_t *pD, int len);

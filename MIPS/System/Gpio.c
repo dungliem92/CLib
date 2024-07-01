@@ -1,4 +1,4 @@
-#include "PIC32MM_Gpio.h"
+#include "Gpio.h"
 #include "Common/Utils.h"
 
 void Gpio_Set(volatile uint32_t *baseReg, gpio_pin_t pin, uint8_t val)

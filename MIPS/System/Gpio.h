@@ -1,8 +1,10 @@
-#ifndef PIC32MM_GPIO_H
-#define PIC32MM_GPIO_H
+#ifndef GPIO_H
+#define GPIO_H
 
 #include "Common/LibDef.h"
 #include "Project_Cfg.h"
+
+#define GPIO_MCU "PIC32MM"
 
 #define HIGH    1
 #define LOW     0

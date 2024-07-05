@@ -131,7 +131,7 @@ public void str_lowercase(uint8_t *pData) // <editor-fold defaultstate="collapse
 
 public bool FindString(uint8_t c, size_t *pIdx, const char *pStrSample) // <editor-fold defaultstate="collapsed" desc="Find a string">
 {
-    if(c!=0x00)
+    if((c!=0x00)&&(*pStrSample==0))
     {
 LOOP:
         if(c==pStrSample[*pIdx])

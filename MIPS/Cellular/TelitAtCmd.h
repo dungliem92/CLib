@@ -5,25 +5,20 @@
 #include "Project_Cfg.h"
 
 typedef struct {
-    bool (*IsRxReady)(void);
-    bool (*IsTxReady)(void);
-    bool (*IsTxDone)(void);
-    void (*Write)(uint8_t);
-    uint8_t(*Read)(void);
-} atcmdport_cxt_t;
-
-typedef struct {
+    const size_t Size;
     uint8_t *pData;
-    int Len;
-    int Size;
+    size_t Len;
 } buff_t;
 
-#ifndef ATCMD_BUFFER_SIZE
-#define ATCMD_BUFFER_SIZE   128
-#ifndef DISABLE_LIBRARY_WARNING
-#warning "Default AtCmdData size is 128"
-#endif
-#endif
+typedef struct
+{
+    uint8_t tryCount;
+    uint16_t firstWait;
+    uint16_t lastWait;
+    char *pCmd;
+    char *pAck;
+    char *pNack;
+} atcmd_cxt_t;
 
 /* ******************************************************* External variables */
 extern buff_t AtCmdRxBuff;
@@ -31,6 +26,8 @@ extern buff_t AtCmdRxBuff;
 extern const char RES_OK[];
 extern const char RES_ERROR[];
 /* ********************************************** Defined in TelitAtCmd_Cfg.c */
+void ATCMD_Port_Init(void);
+void ATCMD_Port_Deinit(void);
 bool ATCMD_Port_IsRxReady(void);
 uint8_t ATCMD_Port_Read(void);
 bool ATCMD_Port_IsTxReady(void);

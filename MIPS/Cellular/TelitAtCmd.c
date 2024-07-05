@@ -11,18 +11,11 @@
 #endif
 
 /* ******************************************************* External variables */
-/* ********************************************************** Local variables */
-
 // Response constants
 const char RES_OK[]="\r\nOK\r\n";
 const char RES_ERROR[]="\r\nERROR\r\n";
-static uint8_t AtCmdData[ATCMD_BUFFER_SIZE];
 
-buff_t AtCmdRxBuff={
-    .Len=0,
-    .Size=ATCMD_BUFFER_SIZE,
-    .pData=AtCmdData
-};
+/* ********************************************************** Local variables */
 
 static size_t RxCount=0;
 static uint8_t ReTry=0;
@@ -31,7 +24,7 @@ static uint8_t DoNext=0;
 static tick_t Tdelay=250;
 static tick_timer_t TickRaw={1, 0, 0};
 
-void ATCMD_Init(void)
+void ATCMD_Init(void) // <editor-fold defaultstate="collapsed" desc="initialize">
 {
     ReTry=0;
     DoNext=0;
@@ -39,12 +32,10 @@ void ATCMD_Init(void)
     TestCount=0;
     Tdelay=250;
     AtCmdRxBuff.Len=0;
-    AtCmdRxBuff.Size=ATCMD_BUFFER_SIZE;
-    AtCmdRxBuff.pData=AtCmdData;
     Tick_Timer_Reset(TickRaw);
-}
+} // </editor-fold>
 
-int8_t ATCMD_SendRaw(const uint8_t *pD, int sz, uint16_t Wait)
+int8_t ATCMD_SendRaw(const uint8_t *pD, int sz, uint16_t Wait) // <editor-fold defaultstate="collapsed" desc="send raw data">
 {
     // Get all response data in Rx buffer before send new data
     if(ATCMD_Port_IsRxReady())
@@ -85,9 +76,9 @@ int8_t ATCMD_SendRaw(const uint8_t *pD, int sz, uint16_t Wait)
     while(!ATCMD_Port_IsTxDone());
 
     return RESULT_DONE;
-}
+} // </editor-fold>
 
-int8_t ATCMD_GetRaw(uint8_t *pD, int *pSz, uint16_t firstWait, uint16_t lastWait)
+int8_t ATCMD_GetRaw(uint8_t *pD, int *pSz, uint16_t firstWait, uint16_t lastWait) // <editor-fold defaultstate="collapsed" desc="get raw data">
 {
     while(ATCMD_Port_IsRxReady())
     {
@@ -104,7 +95,7 @@ int8_t ATCMD_GetRaw(uint8_t *pD, int *pSz, uint16_t firstWait, uint16_t lastWait
             __dbc('>');
         }
 
-        if(RxCount>=ATCMD_BUFFER_SIZE)
+        if(RxCount>=AtCmdRxBuff.Size)
             RxCount=0;
 
         pD[RxCount++]=c;
@@ -136,9 +127,9 @@ int8_t ATCMD_GetRaw(uint8_t *pD, int *pSz, uint16_t firstWait, uint16_t lastWait
     }
 
     return RESULT_BUSY;
-}
+} // </editor-fold>
 
-int8_t ATCMD_SendGetDat(const char *pTx, char *pRx, uint16_t firstWait, uint16_t lastWait)
+int8_t ATCMD_SendGetDat(const char *pTx, char *pRx, uint16_t firstWait, uint16_t lastWait) // <editor-fold defaultstate="collapsed" desc="send cmd then get response">
 {
     int8_t rslt=RESULT_BUSY;
 
@@ -176,9 +167,10 @@ int8_t ATCMD_SendGetDat(const char *pTx, char *pRx, uint16_t firstWait, uint16_t
     }
 
     return rslt;
-}
+} // </editor-fold>
 
-int8_t ATCMD_SendGetAck(const char *pTx, const char *pAck, const char *pNAck, uint16_t firstWait, uint16_t lastWait, uint8_t tryCount)
+int8_t ATCMD_SendGetAck(const char *pTx, const char *pAck, const char *pNAck,
+                        uint16_t firstWait, uint16_t lastWait, uint8_t tryCount) // <editor-fold defaultstate="collapsed" desc="send cmd then get ack">
 {
     static size_t AckCount=0;
     static size_t NAckCount=0;
@@ -289,9 +281,10 @@ int8_t ATCMD_SendGetAck(const char *pTx, const char *pAck, const char *pNAck, ui
     }
 
     return rslt;
-}
+} // </editor-fold>
 
-int8_t ATCMD_GetAck(const char *pAck, const char *pNAck, uint16_t firstWait, uint16_t lastWait, uint8_t tryCount)
+int8_t ATCMD_GetAck(const char *pAck, const char *pNAck,
+                    uint16_t firstWait, uint16_t lastWait, uint8_t tryCount) // <editor-fold defaultstate="collapsed" desc="get ack only">
 {
     static size_t AckCount=0;
     static size_t NAckCount=0;
@@ -377,15 +370,15 @@ int8_t ATCMD_GetAck(const char *pAck, const char *pNAck, uint16_t firstWait, uin
     }
 
     return rslt;
-}
+} // </editor-fold>
 
-int8_t __ATCMD_Test(uint8_t tryCount)
+int8_t __ATCMD_Test(uint8_t tryCount) // <editor-fold defaultstate="collapsed" desc="test at cmd">
 {
     int8_t rslt;
     uint8_t type=tryCount&0xC0;
 
     tryCount&=0x3F;
-    rslt=ATCMD_SendGetAck("AT\r", RES_OK, RES_ERROR, 250, 250, 1);
+    rslt=ATCMD_SendGetAck("ATE0\r", RES_OK, RES_ERROR, 250, 250, 1);
 
     switch(type)
     {
@@ -456,11 +449,46 @@ int8_t __ATCMD_Test(uint8_t tryCount)
     }
 
     return RESULT_BUSY;
-}
+} // </editor-fold>
 
-void ATCMD_Delay(uint16_t delayMs)
+void ATCMD_Delay(uint16_t delayMs) // <editor-fold defaultstate="collapsed" desc="set delay before cmd sent">
 {
     DoNext=3;
     Tdelay=delayMs;
     Tick_Timer_Reset(TickRaw);
+} // </editor-fold>
+
+int8_t ATCMD_EchoOff(void)
+{
+    return __ATCMD_Test(3|AT_LEAST_1ON);
+}
+
+int8_t ATCMD_ReportOn(void)
+{
+    return ATCMD_SendGetAck("AT+CMEE=3\r", RES_OK, NULL, 250, 10, 3);
+}
+
+int8_t ATCMD_NoFlowCtrl(void)
+{
+    return ATCMD_SendGetAck("AT&K0\r", RES_OK, NULL, 250, 10, 3);
+}
+
+int8_t ATCMD_SetAirplaneMode(void)
+{
+    return ATCMD_SendGetAck("AT+CFUN=4\r", RES_OK, NULL, 3000, 10, 3);
+}
+
+int8_t ATCMD_SetFullFuncMode(void)
+{
+    return ATCMD_SendGetAck("AT+CFUN=1\r", RES_OK, NULL, 3000, 10, 3);
+}
+
+int8_t ATCMD_Reboot(void)
+{
+    return ATCMD_SendGetAck("AT#REBOOT\r", RES_OK, NULL, 3000, 10, 3);
+}
+
+int8_t ATCMD_SysHalt(void)
+{
+    return ATCMD_SendGetAck("AT#SYSHALT\r", RES_OK, NULL, 5000, 10, 3);
 }

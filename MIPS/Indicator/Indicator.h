@@ -4,7 +4,7 @@
 #include "Common/LibDef.h"
 #include "Project_Cfg.h"
 #include "System/TickTimer.h"
-#include "System/PIC32MM_Gpio.h"
+#include "System/Gpio.h"
 
 typedef __PACKED_STRUCT
 {

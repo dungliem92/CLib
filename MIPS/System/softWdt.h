@@ -3,7 +3,7 @@
 
 #include "Common/LibDef.h"
 #include "Project_Cfg.h"
-#include "PIC32MM_Gpio.h"
+#include "Gpio.h"
 #include "TaskManager.h"
 
 extern volatile uint32_t softWdtCount;

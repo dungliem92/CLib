@@ -580,6 +580,32 @@ public int str_sub(char *des, const char *src, char c1, int count1, int offset1,
     return end;
 } // </editor-fold>
 
+public int str_sub_between_2sub(char *des, const char *src, const char *sub1, const char *sub2) // <editor-fold defaultstate="collapsed" desc="Get sub string between 2 sub strings">
+{
+    int i, len=0;
+    const char *psub1, *psub2;
+
+    psub1=str_1st_contain(src, sub1);
+
+    if(psub1!=NULL)
+    {
+        psub1+=slen(sub1);
+        psub2=str_1st_contain(psub1, sub2);
+
+        if(psub2!=NULL)
+        {
+            len=(int) (psub2-psub1)+1;
+
+            for(i=0; i<len; i++)
+                des[i]=psub1[i];
+
+            des[i]=0x00;
+        }
+    }
+    
+    return len;
+}// </editor-fold>
+
 public char *str_first(char *p, char c) // <editor-fold defaultstate="collapsed" desc="Get pointer of the first index of 'c' in string">
 {
     while(*p!=0x00)

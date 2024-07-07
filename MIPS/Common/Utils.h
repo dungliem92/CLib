@@ -41,6 +41,7 @@ public const char *str_last_contain(const char *sub, const char *str);
 public int str_last_contain_idx(const char *sub, const char *str);
 public const char *str_n_contain(const char *sub, const char *str, int count);
 public int str_sub(char *des, const char *src, char c1, int count1, int offset1, char c2, int count2, int offset2);
+public int str_sub_between_2sub(char *des, const char *src, const char *sub1, const char *sub2);
 public char *str_first(char *p, char c);
 public char *str_last(char *p, char c);
 public int32_t IntParse(const char *c); // NULL input is 0

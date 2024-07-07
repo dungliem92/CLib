@@ -82,8 +82,10 @@ typedef const char *far_string_t;
 #define PROC_DRV_ERR                    (-2)
 
 #define RESULT_DONE                     0
-#define RESULT_BUSY                     1
-#define RESULT_REBOOT                   2
+#define RESULT_ACK                      0
+#define RESULT_NACK                     1
+#define RESULT_BUSY                     2
+#define RESULT_REBOOT                   3
 #define RESULT_ERR                      (-1)
 
 #ifdef __XC32

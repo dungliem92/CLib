@@ -131,23 +131,28 @@ public void str_lowercase(uint8_t *pData) // <editor-fold defaultstate="collapse
 
 public bool FindString(uint8_t c, size_t *pIdx, const char *pStrSample) // <editor-fold defaultstate="collapsed" desc="Find a string">
 {
-    if((c!=0x00)&&(*pStrSample==0))
+    if(pStrSample!=NULL)
     {
-LOOP:
-        if(c==pStrSample[*pIdx])
+        if(c!=0x00)
         {
-            (*pIdx)=(*pIdx)+1;
+LOOP:
+            if(c==pStrSample[*pIdx])
+            {
+                (*pIdx)=(*pIdx)+1;
 
-            if(pStrSample[*pIdx]==0x00)
+                if(pStrSample[*pIdx]==0x00)
+                {
+                    *pIdx=0;
+                    return 1; // matched
+                }
+            }
+            else if(*pIdx>0)
             {
                 *pIdx=0;
-                return 1; // matched
+                goto LOOP;
             }
-        }
-        else if(*pIdx>0)
-        {
-            *pIdx=0;
-            goto LOOP;
+            else
+                *pIdx=0;
         }
         else
             *pIdx=0;
@@ -602,7 +607,7 @@ public int str_sub_between_2sub(char *des, const char *src, const char *sub1, co
             des[i]=0x00;
         }
     }
-    
+
     return len;
 }// </editor-fold>
 

@@ -10,8 +10,7 @@ typedef struct {
     size_t Len;
 } __attribute_packed__ buff_t;
 
-typedef struct
-{
+typedef struct {
     uint8_t tryCount;
     uint16_t firstWait;
     uint16_t lastWait;
@@ -20,8 +19,7 @@ typedef struct
     char *pNack;
 } __attribute_packed__ atcmd_cxt_t;
 
-typedef struct
-{
+typedef struct {
     uint32_t plmn;
     uint32_t cid;
     uint16_t tac;
@@ -31,15 +29,13 @@ typedef struct
     int8_t rsrq;
 } __attribute_packed__ rfsts_t;
 
-typedef struct
-{
+typedef struct {
     char imei[16];
     char ccid[20];
     char imsi[16];
 } __attribute_packed__ module_info_t;
 
-typedef struct
-{
+typedef struct {
     float lat;
     float lon;
     float alt;
@@ -61,12 +57,13 @@ void ATCMD_Port_Write(uint8_t);
 bool ATCMD_Port_IsTxDone(void);
 /* ************************************************************************** */
 void ATCMD_Init(void);
+void ATCMD_Deinit(void);
 void ATCMD_Delay(uint16_t delayMs);
 int8_t ATCMD_SendRaw(const uint8_t *pD, int sz, uint16_t Wait);
 int8_t ATCMD_GetRaw(uint8_t *pD, int *pSz, uint16_t firstWait, uint16_t lastWait);
 int8_t ATCMD_SendGetDat(const char *pTx, char *pRx, uint16_t firstWait, uint16_t lastWait);
 int8_t ATCMD_SendGetAck(const char *pTx, const char *pAck, const char *pNAck, uint16_t firstWait, uint16_t lastWait, uint8_t tryCount);
-int8_t ATCMD_GetAck(const char *pAck, const char *pNAck, uint16_t firstWait, uint16_t lastWait, uint8_t tryCount);
+int8_t ATCMD_GetAck(const char *pAck, const char *pNAck, uint16_t firstWait, uint16_t lastWait);
 /* ************************************************************************** */
 int8_t __ATCMD_Test(uint8_t tryCount); // Max 63 time
 // tryCount OR (|) options
@@ -77,7 +74,7 @@ int8_t __ATCMD_Test(uint8_t tryCount); // Max 63 time
 #define ATCMD_Test(trycount, opt)    __ATCMD_Test(trycount|opt)
 /* ********************************************************************* APIs */
 
-int8_t ATCMD_EchoOff(void);
+int8_t ATCMD_EchoOff(uint8_t);
 int8_t ATCMD_ReportOn(void);
 int8_t ATCMD_NoFlowCtrl(void);
 int8_t ATCMD_SetAirplaneMode(void);
@@ -85,9 +82,9 @@ int8_t ATCMD_SetFullFuncMode(void);
 int8_t ATCMD_Reboot(void);
 int8_t ATCMD_SysHalt(void);
 int8_t ATCMD_CheckSim(void);
-int8_t ATCMD_CheckNetReg(void);
+int8_t ATCMD_CheckNetReg(uint8_t);
 int8_t ATCMD_GetGnssPwrStt(bool *);
-int8_t ATCMD_SetGnssPwrStt(bool );
+int8_t ATCMD_SetGnssPwrStt(bool);
 int8_t ATCMD_GetImei(char *);
 int8_t ATCMD_GetIccId(char *);
 int8_t ATCMD_GetImsi(char *);

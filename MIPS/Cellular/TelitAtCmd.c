@@ -25,6 +25,7 @@ static uint8_t ReTry=0;
 static uint8_t TestCount=0;
 static uint8_t DoNext=0;
 static tick_t Tdelay=500;
+static int8_t lastRslt=RESULT_DONE;
 static tick_timer_t TickRaw={1, 0, 0};
 
 void ATCMD_Init(void) // <editor-fold defaultstate="collapsed" desc="initialize">
@@ -37,26 +38,43 @@ void ATCMD_Init(void) // <editor-fold defaultstate="collapsed" desc="initialize"
     NAckCount=0;
     Tdelay=500;
     AtCmdRxBuff.Len=0;
+    lastRslt=RESULT_DONE;
     Tick_Timer_Reset(TickRaw);
+    ATCMD_Port_Init();
 } // </editor-fold>
+
+void ATCMD_Deinit(void) // <editor-fold defaultstate="collapsed" desc="deinitialize">
+{
+    ATCMD_Port_Deinit();
+}
 
 int8_t ATCMD_SendRaw(const uint8_t *pD, int sz, uint16_t Wait) // <editor-fold defaultstate="collapsed" desc="send raw data">
 {
     // Get all response data in Rx buffer before send new data
-    if(ATCMD_Port_IsRxReady())
+    __dbs("\n\nClear Rx: ");
+
+    while(ATCMD_Port_IsRxReady())
     {
-        ATCMD_Port_Read();
+        uint8_t c=ATCMD_Port_Read();
+
+        if(is_printable(c))
+            __dbc(c);
+        else
+        {
+            __dbc('<');
+            __dbh2(c);
+            __dbc('>');
+        }
 
         if(Tick_Timer_Is_Over_Ms(TickRaw, Wait))
         {
-            __dbs("TX timeout");
+            __dbs("\nTX timeout");
             return RESULT_ERR;
         }
-        else
-            return RESULT_BUSY;
     }
 
-    __dbs("\nTX: ");
+    __dbs(" Done");
+    __tsdbs("TX: ");
     Tick_Timer_Reset(TickRaw);
     RxCount=0;
 
@@ -116,7 +134,7 @@ int8_t ATCMD_GetRaw(uint8_t *pD, int *pSz, uint16_t firstWait, uint16_t lastWait
             pD[RxCount]=0x00;
             RxCount=0;
 
-            __dbs("No response");
+            __dbs("\nNo response");
             return RESULT_ERR;
         }
     }
@@ -157,7 +175,7 @@ int8_t ATCMD_SendGetDat(const char *pTx, char *pRx, uint16_t firstWait, uint16_t
             {
                 DoNext++;
                 rslt=RESULT_BUSY;
-                __dbs("\nRX: ");
+                __tsdbs("RX: ");
             }
             else if(rslt==RESULT_ERR)
                 DoNext=0;
@@ -192,6 +210,7 @@ int8_t ATCMD_SendGetAck(const char *pTx, const char *pAck, const char *pNAck,
             AckCount=0;
             NAckCount=0;
             AtCmdRxBuff.Len=0;
+            lastRslt=RESULT_ERR;
             Tick_Timer_Reset(TickRaw);
 
         case 1:
@@ -201,7 +220,7 @@ int8_t ATCMD_SendGetAck(const char *pTx, const char *pAck, const char *pNAck,
             {
                 DoNext++;
                 rslt=RESULT_BUSY;
-                __dbs("\nRX: ");
+                __tsdbs("RX: ");
             }
             else if(rslt==RESULT_ERR)
                 DoNext=0;
@@ -228,12 +247,12 @@ int8_t ATCMD_SendGetAck(const char *pTx, const char *pAck, const char *pNAck,
                     AtCmdRxBuff.Len=0;
 
                 if(FindString(c, &AckCount, (const char *) pAck))
-                    rslt=RESULT_ACK;
+                    lastRslt=RESULT_ACK;
 
-                if(rslt!=RESULT_ACK)
+                if(lastRslt!=RESULT_ACK)
                 {
                     if(FindString(c, &NAckCount, (const char *) pNAck))
-                        rslt=RESULT_NACK;
+                        lastRslt=RESULT_NACK;
                 }
 
                 if(c!=0x00)
@@ -242,58 +261,63 @@ int8_t ATCMD_SendGetAck(const char *pTx, const char *pAck, const char *pNAck,
                     break;
             }
 
-            if((rslt!=RESULT_ACK)&&(rslt!=RESULT_NACK))
+            if(AtCmdRxBuff.Len==0)
             {
-                if(AtCmdRxBuff.Len==0)
-                {
-                    if(Tick_Timer_Is_Over_Ms(TickRaw, firstWait))
-                    {
-                        if(++ReTry>=tryCount)
-                        {
-                            ReTry=0;
-                            DoNext=0;
-                            __dbs("RX timeout");
-                            return RESULT_ERR;
-                        }
-                        else
-                            DoNext=3;
-                    }
-                }
-                else if(Tick_Timer_Is_Over_Ms(TickRaw, lastWait)||(rslt==RESULT_ERR))
+                if(Tick_Timer_Is_Over_Ms(TickRaw, firstWait))
                 {
                     if(++ReTry>=tryCount)
                     {
                         ReTry=0;
                         DoNext=0;
-                        __dbs("Not found");
+                        __dbs("\nRX timeout");
                         return RESULT_ERR;
                     }
                     else
-                    {
-                        rslt=RESULT_BUSY;
                         DoNext=3;
-                    }
                 }
             }
-            else
+            else if(Tick_Timer_Is_Over_Ms(TickRaw, lastWait))
             {
-                DoNext=0;
-                ReTry=0;
+                if(lastRslt==RESULT_ERR)
+                {
+                    if(++ReTry>=tryCount)
+                    {
+                        ReTry=0;
+                        DoNext=0;
+                        __dbs("\nNot found");
+                        return RESULT_ERR;
+                    }
+                    else
+                        DoNext=3;
+                }
+                else
+                {
+                    ReTry=0;
+                    DoNext=0;
+
+                    if(lastRslt==RESULT_ACK)
+                        __dbs("\nFound Ack");
+                    else
+                        __dbs("\nFound Nack");
+
+                    return lastRslt;
+                }
             }
             break;
     }
 
-    return rslt;
+    return RESULT_BUSY;
 } // </editor-fold>
 
 int8_t ATCMD_GetAck(const char *pAck, const char *pNAck,
-                    uint16_t firstWait, uint16_t lastWait, uint8_t tryCount) // <editor-fold defaultstate="collapsed" desc="get ack only">
+                    uint16_t firstWait, uint16_t lastWait) // <editor-fold defaultstate="collapsed" desc="get ack only">
 {
     int8_t rslt=RESULT_BUSY;
 
     switch(DoNext)
     {
         default:
+        case 3:
         case 0:
             DoNext++;
             AckCount=0;
@@ -301,12 +325,22 @@ int8_t ATCMD_GetAck(const char *pAck, const char *pNAck,
             AtCmdRxBuff.Len=0;
             Tick_Timer_Reset(TickRaw);
 
+        case 1:
+            DoNext++;
+
         case 2:
             while(ATCMD_Port_IsRxReady())
             {
                 char c=ATCMD_Port_Read();
 
-                __dbc(c);
+                if(is_printable(c))
+                    __dbc(c);
+                else
+                {
+                    __dbc('<');
+                    __dbh2(c);
+                    __dbc('>');
+                }
 
                 AtCmdRxBuff.pData[AtCmdRxBuff.Len++]=c;
                 AtCmdRxBuff.pData[AtCmdRxBuff.Len]=0;
@@ -315,12 +349,12 @@ int8_t ATCMD_GetAck(const char *pAck, const char *pNAck,
                     AtCmdRxBuff.Len=0;
 
                 if(FindString(c, &AckCount, (const char *) pAck))
-                    rslt=RESULT_ACK;
+                    lastRslt=RESULT_ACK;
 
-                if(rslt!=RESULT_ACK)
+                if(lastRslt!=RESULT_ACK)
                 {
                     if(FindString(c, &NAckCount, (const char *) pNAck))
-                        rslt=RESULT_NACK;
+                        lastRslt=RESULT_NACK;
                 }
 
                 if(c!=0x00)
@@ -329,43 +363,37 @@ int8_t ATCMD_GetAck(const char *pAck, const char *pNAck,
                     break;
             }
 
-            if((rslt!=RESULT_ACK)&&(rslt!=RESULT_NACK))
+            if(AtCmdRxBuff.Len==0)
             {
-                if(AtCmdRxBuff.Len==0)
+                if(Tick_Timer_Is_Over_Ms(TickRaw, firstWait))
                 {
-                    if(Tick_Timer_Is_Over_Ms(TickRaw, firstWait))
-                    {
-                        if(++ReTry>=tryCount)
-                        {
-                            ReTry=0;
-                            DoNext=0;
-                            __dbs("RX timeout");
-                            return RESULT_ERR;
-                        }
-                        else
-                            DoNext=3;
-                    }
-                }
-                else if(Tick_Timer_Is_Over_Ms(TickRaw, lastWait)||(rslt==RESULT_ERR))
-                {
-                    if(++ReTry>=tryCount)
-                    {
-                        ReTry=0;
-                        DoNext=0;
-                        __dbs("Not found");
-                        return RESULT_ERR;
-                    }
-                    else
-                    {
-                        rslt=RESULT_BUSY;
-                        DoNext=3;
-                    }
+                    ReTry=0;
+                    DoNext=0;
+                    __dbs("\nRX timeout");
+                    return RESULT_ERR;
                 }
             }
-            else
+            else if(Tick_Timer_Is_Over_Ms(TickRaw, lastWait))
             {
-                DoNext=0;
-                ReTry=0;
+                if(lastRslt==RESULT_ERR)
+                {
+                    ReTry=0;
+                    DoNext=0;
+                    __dbs("\nNot found");
+                    return RESULT_ERR;
+                }
+                else
+                {
+                    ReTry=0;
+                    DoNext=0;
+
+                    if(lastRslt==RESULT_ACK)
+                        __dbs("\nFound Ack");
+                    else
+                        __dbs("\nFound Nack");
+
+                    return lastRslt;
+                }
             }
             break;
     }
@@ -461,9 +489,12 @@ void ATCMD_Delay(uint16_t delayMs) // <editor-fold defaultstate="collapsed" desc
 
 /* ********************************************************************* APIs */
 
-int8_t ATCMD_EchoOff(void)
+int8_t ATCMD_EchoOff(uint8_t reTry)
 {
-    return __ATCMD_Test(3|AT_LEAST_1ON);
+    if(reTry>63)
+        reTry=63;
+    
+    return __ATCMD_Test(reTry|AT_LEAST_1ON);
 }
 
 int8_t ATCMD_ReportOn(void)
@@ -501,9 +532,9 @@ int8_t ATCMD_CheckSim(void)
     return ATCMD_SendGetAck("AT+CPIN?\r", RES_READY, NULL, 500, 10, 3);
 }
 
-int8_t ATCMD_CheckNetReg(void)
+int8_t ATCMD_CheckNetReg(uint8_t retry)
 {
-    int8_t rslt=ATCMD_SendGetAck("AT+CEREG\r", ",1", ",5", 500, 10, 3);
+    int8_t rslt=ATCMD_SendGetAck("AT+CEREG?\r", ",1", ",5", 500, 10, retry);
 
     if((rslt==RESULT_ACK)||(rslt==RESULT_NACK))
         rslt=RESULT_DONE;
@@ -546,7 +577,7 @@ int8_t ATCMD_GetImei(char *pStr)
     int8_t rslt=ATCMD_SendGetAck("AT#CGSN\r", RES_OK, NULL, 500, 10, 3);
 
     if(rslt==RESULT_DONE)
-        str_sub_between_2sub(pStr, (const char *)AtCmdRxBuff.pData, "#CGSN: ", "\r");
+        str_sub_between_2sub(pStr, (const char *) AtCmdRxBuff.pData, "#CGSN: ", "\r");
 
     return rslt;
 }
@@ -556,7 +587,7 @@ int8_t ATCMD_GetIccId(char *pStr)
     int8_t rslt=ATCMD_SendGetAck("AT#CCID\r", RES_OK, NULL, 500, 10, 3);
 
     if(rslt==RESULT_DONE)
-        str_sub_between_2sub(pStr, (const char *)AtCmdRxBuff.pData, "#CCID: ", "\r");
+        str_sub_between_2sub(pStr, (const char *) AtCmdRxBuff.pData, "#CCID: ", "\r");
 
     return rslt;
 }
@@ -566,7 +597,7 @@ int8_t ATCMD_GetImsi(char *pStr)
     int8_t rslt=ATCMD_SendGetAck("AT#IMSI\r", RES_OK, NULL, 500, 10, 3);
 
     if(rslt==RESULT_DONE)
-        str_sub_between_2sub(pStr, (const char *)AtCmdRxBuff.pData, "#IMSI: ", "\r");
+        str_sub_between_2sub(pStr, (const char *) AtCmdRxBuff.pData, "#IMSI: ", "\r");
 
     return rslt;
 }

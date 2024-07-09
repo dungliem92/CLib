@@ -135,3 +135,10 @@ uint8_t sht4x_get_configured_address(void)
 {
     return SHT4X_ADDRESS;
 }
+
+bool sht4x_init(void)
+{
+    sensirion_i2c_init();
+    
+    return (sht4x_probe()==STATUS_OK);
+}

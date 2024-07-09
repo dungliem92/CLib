@@ -556,6 +556,7 @@ bool AS5600_Init(void)
 {
     uint8_t reg;
 
+    AS5600_I2C_Open();
     _directionPin=255;
     _direction=AS5600_CLOCK_WISE;
     _error=AS5600_OK;
@@ -578,12 +579,19 @@ bool AS5600_Init(void)
     return AS5600_I2C_WriteNByte(AS5600_SLV_ADDR, &reg, 1);
 }
 
+void AS5600_Deinit(void)
+{
+    AS5600_I2C_Close();
+}
+
 direction_t AS5600_GetAngle(uint16_t *pAngle)
 {
-    float angle=AS5600_rawAngle();
+    float tmp;
+    
+    *pAngle=AS5600_rawAngle();
+    tmp=(float)*pAngle;
+    tmp/=22.5;
+    tmp+=0.5;
 
-    angle/=22.5;
-    angle+=0.5;
-
-    return (direction_t) angle;
+    return (direction_t) tmp;
 }

@@ -120,9 +120,12 @@ typedef enum {
 } direction_t;
 
 bool AS5600_Init(void);
+void AS5600_Deinit(void);
 direction_t AS5600_GetAngle(uint16_t *pAngle);
 
 /* ************************************************** Defined in AS5600_Cfg.c */
+void AS5600_I2C_Open(void);
+void AS5600_I2C_Close(void);
 bool AS5600_I2C_WriteNByte(uint8_t slcAddr, const uint8_t *pD, uint8_t len);
 bool AS5600_I2C_ReadNByte(uint8_t slcAddr, uint8_t *pD, uint8_t len);
 

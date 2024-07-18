@@ -4,7 +4,10 @@
 #include "../Common/LibDef.h"
 #include "Project_Cfg.h"
 
-#define AS5600_SLV_ADDR     0x36
+#define AS5600_SLV_ADDR 0x36
+#define AS5600_ERROR    (-1)
+#define AS5600_OK       0
+
 extern const uint8_t AS5600_SW_DIRECTION_PIN;
 //  CONFIGURATION REGISTERS
 extern const uint8_t AS5600_ZMCO;
@@ -52,14 +55,6 @@ extern const float AS5600_RAW_TO_RPM;
 extern const uint8_t AS5600_MODE_DEGREES;
 extern const uint8_t AS5600_MODE_RADIANS;
 extern const uint8_t AS5600_MODE_RPM;
-//  ERROR CODES
-extern const int AS5600_OK;
-extern const int AS5600_ERROR_I2C_READ_0;
-extern const int AS5600_ERROR_I2C_READ_1;
-extern const int AS5600_ERROR_I2C_READ_2;
-extern const int AS5600_ERROR_I2C_READ_3;
-extern const int AS5600_ERROR_I2C_WRITE_0;
-extern const int AS5600_ERROR_I2C_WRITE_1;
 
 //  CONFIGURE CONSTANTS
 //  setOutputMode
@@ -121,6 +116,7 @@ typedef enum {
 
 bool AS5600_Init(void);
 void AS5600_Deinit(void);
+int8_t AS5600_lastError(void);
 direction_t AS5600_GetAngle(uint16_t *pAngle);
 
 /* ************************************************** Defined in AS5600_Cfg.c */

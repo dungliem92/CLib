@@ -49,14 +49,6 @@ const float AS5600_RAW_TO_RPM=(60.0/4096.0);
 const uint8_t AS5600_MODE_DEGREES=0;
 const uint8_t AS5600_MODE_RADIANS=1;
 const uint8_t AS5600_MODE_RPM=2;
-//  ERROR CODES
-const int AS5600_OK=0;
-const int AS5600_ERROR_I2C_READ_0= -100;
-const int AS5600_ERROR_I2C_READ_1= -101;
-const int AS5600_ERROR_I2C_READ_2= -102;
-const int AS5600_ERROR_I2C_READ_3= -103;
-const int AS5600_ERROR_I2C_WRITE_0= -200;
-const int AS5600_ERROR_I2C_WRITE_1= -201;
 
 //  CONFIGURE CONSTANTS
 //  setOutputMode
@@ -117,8 +109,13 @@ int16_t _lastPosition=0;
 
 uint8_t readReg(uint8_t reg)
 {
-    AS5600_I2C_WriteNByte(AS5600_SLV_ADDR, &reg, 1);
-    AS5600_I2C_ReadNByte(AS5600_SLV_ADDR, &reg, 1);
+    _error=AS5600_ERROR;
+
+    if(AS5600_I2C_WriteNByte(AS5600_SLV_ADDR, &reg, 1))
+    {
+        if(AS5600_I2C_ReadNByte(AS5600_SLV_ADDR, &reg, 1))
+            _error=AS5600_OK;
+    }
 
     return reg;
 }
@@ -128,8 +125,14 @@ uint16_t readReg2(uint8_t reg)
     uint16_t tmp;
     uint8_t data[2];
 
-    AS5600_I2C_WriteNByte(AS5600_SLV_ADDR, &reg, 1);
-    AS5600_I2C_ReadNByte(AS5600_SLV_ADDR, &data[0], 2);
+    _error=AS5600_ERROR;
+
+    if(AS5600_I2C_WriteNByte(AS5600_SLV_ADDR, &reg, 1))
+    {
+        if(AS5600_I2C_ReadNByte(AS5600_SLV_ADDR, &data[0], 2))
+            _error=AS5600_OK;
+    }
+
     tmp=data[0];
     tmp<<=1;
     tmp|=data[1];
@@ -543,7 +546,7 @@ int32_t AS5600_resetCumulativePosition(int32_t position)
     return old;
 }
 
-int AS5600_lastError(void)
+int8_t AS5600_lastError(void)
 {
     int value=_error;
 
@@ -587,9 +590,9 @@ void AS5600_Deinit(void)
 direction_t AS5600_GetAngle(uint16_t *pAngle)
 {
     float tmp;
-    
+
     *pAngle=AS5600_rawAngle();
-    tmp=(float)*pAngle;
+    tmp=(float) *pAngle;
     tmp/=22.5;
     tmp+=0.5;
 

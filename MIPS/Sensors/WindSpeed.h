@@ -10,12 +10,12 @@ bool WindSpeed_Init(void);
 
 void WindSpeed_Deinit(void);
 
+void WindSpeed_Process(void);
+
 uint16_t WindSpeed_GetSpeed(void);
 
 void WindSpeed_TimerStart(void);
 
 void WindSpeed_TimerStop(void);
-
-uint32_t WindSpeed_TimerGet(void);
 
 #endif

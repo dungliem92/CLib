@@ -59,6 +59,8 @@ extern "C" {
           */
 
     bool sht4x_init(void);
+    
+    void sht4x_deinit(void);
 
     /**
      * Detects if a sensor is connected by reading out the ID register.

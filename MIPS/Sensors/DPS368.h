@@ -72,8 +72,11 @@ void DPS368_config_int(uint8_t int_source);
  */
 void DPS368_get_result(int32_t *tmp, int32_t *prs);
 bool DPS368_Init(void);
+void DPS368_Deinit(void);
 /* ************************************************** Defined in DPS368_Cfg.c */
 void DPS368_Config(void);
+void DPS368_I2C_Open(void);
+void DPS368_I2C_Close(void);
 bool DPS368_I2C_ReadNByte(uint8_t slvAddr, uint8_t *pD, uint8_t len);
 bool DPS368_I2C_WriteNByte(uint8_t slvAddr, const uint8_t *pD, uint8_t len);
 

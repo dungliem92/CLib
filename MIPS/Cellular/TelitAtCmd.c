@@ -8,6 +8,7 @@
 #define __dbs(...)
 #define __dbc(...)
 #define __dbh2(...)
+#define __tsdbs(...)
 #endif
 
 /* ******************************************************* External variables */

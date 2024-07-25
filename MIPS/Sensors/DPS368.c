@@ -127,7 +127,7 @@ void DPS368_get_result(int32_t *tmp, int32_t *prs)
 {
     uint8_t res[DPS368_RES_SIZE*2];
     int32_t t_raw, p_raw;
-    float t_raw_sc, p_raw_sc;
+    float t_raw_sc, p_raw_sc, tp;
 
     DPS368_read_bytes(0x00, res, DPS368_RES_SIZE*2);
 
@@ -136,23 +136,33 @@ void DPS368_get_result(int32_t *tmp, int32_t *prs)
     t_raw=((uint32_t) res[3]<<16)|((uint32_t) res[4]<<8)|((uint32_t) res[5]);
     DPS368_get_comp(&t_raw, 24);
 
-    t_raw_sc=t_raw/scale_factor[sr_tmp];
-    *tmp=(c0*0.5f+c1*t_raw_sc) * 100;
+    t_raw_sc=(float)t_raw/scale_factor[sr_tmp];
+    tp=((float)c0*0.5f+(float)c1*t_raw_sc) * 100.0f;
+    *tmp=(int32_t)tp;
 
-    p_raw_sc=p_raw/scale_factor[sr_prs];
-    *prs=c00+p_raw_sc*(c10+p_raw_sc*(c20+p_raw_sc*c30))+t_raw_sc*c01+t_raw_sc*p_raw_sc*(c11+p_raw_sc*c21);
+    p_raw_sc=(float)p_raw/scale_factor[sr_prs];
+    tp=(float)c00+p_raw_sc*((float)c10+p_raw_sc*((float)c20+p_raw_sc*(float)c30))
+            +t_raw_sc*(float)c01+t_raw_sc*p_raw_sc*((float)c11+p_raw_sc*(float)c21);
+    *prs=(int32_t)tp;
 }
 
 bool DPS368_Init(void)
 {
+    DPS368_I2C_Open();
+
     if(DPS368_I2C_WriteNByte(DPS368_ADDR, NULL, 0))
     {
         DPS368_read_tmp_sens();
         DPS368_read_coefs();
         DPS368_Config();
-        
+
         return 1;
     }
 
     return 0;
+}
+
+void DPS368_Deinit(void)
+{
+    DPS368_I2C_Close();
 }

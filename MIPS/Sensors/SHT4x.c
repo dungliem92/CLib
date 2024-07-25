@@ -142,3 +142,8 @@ bool sht4x_init(void)
     
     return (sht4x_probe()==STATUS_OK);
 }
+
+void sht4x_deinit(void)
+{
+    sensirion_i2c_release();
+}

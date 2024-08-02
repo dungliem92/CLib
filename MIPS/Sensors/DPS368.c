@@ -1,5 +1,13 @@
 #include "DPS368.h"
 
+#ifdef USE_DPS368_DEBUG
+#include "Common/Debug.h"
+#else
+#define __dbsi(...)
+#define __dbs(...)
+#define __dbh2(...)
+#endif
+
 #define DPS368_COEF_SIZE 18
 #define DPS368_RES_SIZE 3
 
@@ -61,30 +69,39 @@ static void DPS368_read_coefs(void)
 
     c0=((uint32_t) coefs[0]<<4)|(((uint32_t) coefs[1]>>4) & 0x0f);
     DPS368_get_comp(&c0, 12);
+    __dbsi("\nC0=", c0);
 
     c1=(((uint32_t) coefs[1] & 0x0f)<<8)|(uint32_t) coefs[2];
     DPS368_get_comp(&c1, 12);
+    __dbsi("\nC0=", c1);
 
     c00=((uint32_t) coefs[3]<<12)|((uint32_t) coefs[4]<<4)|(((uint32_t) coefs[5]>>4) & 0x0f);
     DPS368_get_comp(&c00, 20);
+    __dbsi("\nC00=", c00);
 
     c10=(((uint32_t) coefs[5] & 0x0f)<<16)|((uint32_t) coefs[6]<<8)|(uint32_t) coefs[7];
     DPS368_get_comp(&c10, 20);
+    __dbsi("\nC10=", c10);
 
     c01=((uint32_t) coefs[8]<<8)|(uint32_t) coefs[9];
     DPS368_get_comp(&c01, 16);
+    __dbsi("\nC01=", c01);
 
     c11=((uint32_t) coefs[10]<<8)|(uint32_t) coefs[11];
     DPS368_get_comp(&c11, 16);
+    __dbsi("\nC11=", c11);
 
     c20=((uint32_t) coefs[12]<<8)|(uint32_t) coefs[13];
     DPS368_get_comp(&c20, 16);
+    __dbsi("\nC20=", c20);
 
     c21=((uint32_t) coefs[14]<<8)|(uint32_t) coefs[15];
     DPS368_get_comp(&c21, 16);
+    __dbsi("\nC21=", c21);
 
     c30=((uint32_t) coefs[16]<<8)|(uint32_t) coefs[17];
     DPS368_get_comp(&c30, 16);
+    __dbsi("\nC30=", c30);
 }
 
 void DPS368_set_opmode(dps368_opmode_t mode)
@@ -133,17 +150,18 @@ void DPS368_get_result(int32_t *tmp, int32_t *prs)
 
     p_raw=((uint32_t) res[0]<<16)|((uint32_t) res[1]<<8)|((uint32_t) res[2]);
     DPS368_get_comp(&p_raw, 24);
+    
     t_raw=((uint32_t) res[3]<<16)|((uint32_t) res[4]<<8)|((uint32_t) res[5]);
     DPS368_get_comp(&t_raw, 24);
 
-    t_raw_sc=(float)t_raw/scale_factor[sr_tmp];
-    tp=((float)c0*0.5f+(float)c1*t_raw_sc) * 100.0f;
-    *tmp=(int32_t)tp;
+    t_raw_sc=(float) t_raw/scale_factor[sr_tmp];
+    tp=((float) c0*0.5f+(float) c1*t_raw_sc)*1000.0f; // milli of C degree
+    *tmp=(int32_t) tp;
 
-    p_raw_sc=(float)p_raw/scale_factor[sr_prs];
-    tp=(float)c00+p_raw_sc*((float)c10+p_raw_sc*((float)c20+p_raw_sc*(float)c30))
-            +t_raw_sc*(float)c01+t_raw_sc*p_raw_sc*((float)c11+p_raw_sc*(float)c21);
-    *prs=(int32_t)tp;
+    p_raw_sc=(float) p_raw/scale_factor[sr_prs];
+    tp=(float) c00+p_raw_sc*((float) c10+p_raw_sc*((float) c20+p_raw_sc*(float) c30))
+            +t_raw_sc*(float) c01+t_raw_sc*p_raw_sc*((float) c11+p_raw_sc*(float) c21);
+    *prs=(int32_t) tp;
 }
 
 bool DPS368_Init(void)

@@ -7,6 +7,7 @@
 void RainFall_Count(void);
 bool RainFall_Init(void);
 void RainFall_Deinit(void);
+void RainFall_Reset(void);
 uint16_t RainFall_GetRainGauge(void);
 
 uint32_t RainFall_TimerGet(void);

@@ -494,7 +494,7 @@ int8_t ATCMD_EchoOff(uint8_t reTry)
 {
     if(reTry>63)
         reTry=63;
-    
+
     return __ATCMD_Test(reTry|AT_LEAST_1ON);
 }
 
@@ -516,6 +516,16 @@ int8_t ATCMD_SetAirplaneMode(void)
 int8_t ATCMD_SetFullFuncMode(void)
 {
     return ATCMD_SendGetAck("AT+CFUN=1\r", RES_OK, NULL, 5000, 10, 3);
+}
+
+int8_t ATCMD_SetLteOnly(void)
+{
+    return ATCMD_SendGetAck("AT+WS46=28\r", RES_OK, NULL, 5000, 10, 3);
+}
+
+int8_t ATCMD_SetNbPriority(void)
+{
+    return ATCMD_SendGetAck("AT#WS46=1\r", RES_OK, NULL, 5000, 10, 3);
 }
 
 int8_t ATCMD_Reboot(void)

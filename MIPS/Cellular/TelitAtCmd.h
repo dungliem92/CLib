@@ -79,6 +79,8 @@ int8_t ATCMD_ReportOn(void);
 int8_t ATCMD_NoFlowCtrl(void);
 int8_t ATCMD_SetAirplaneMode(void);
 int8_t ATCMD_SetFullFuncMode(void);
+int8_t ATCMD_SetNbPriority(void);
+int8_t ATCMD_SetLteOnly(void);
 int8_t ATCMD_Reboot(void);
 int8_t ATCMD_SysHalt(void);
 int8_t ATCMD_CheckSim(void);

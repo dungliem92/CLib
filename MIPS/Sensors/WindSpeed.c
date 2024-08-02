@@ -1,9 +1,11 @@
-#include "WindSpeed.h"
+#include "ext_int.h"
+#include "Sensors/WindSpeed.h"
+#include "tmr1.h"
 
-static uint32_t Cnt=0;
-static uint16_t Speed=0;
-static bool init=0;
-static const float SPEED_CONST=0.104; // m/s
+static uint32_t Cnt = 0;
+static float Speed = 0;
+static bool init = false;
+static const float SPEED_CONST = 0.10430112; 
 
 void WindSpeed_Count(void)
 {
@@ -12,19 +14,17 @@ void WindSpeed_Count(void)
 
 void WindSpeed_Process(void)
 {
-    float tmp=((float) Cnt*SPEED_CONST);
-
-    Cnt=0;
-    Speed=(uint16_t) tmp;
+    Speed = (float)Cnt * SPEED_CONST; 
+    Cnt = 0; 
 }
 
 bool WindSpeed_Init(void)
 {
-    if(init==0)
+    if (!init)
     {
-        init=0;
-        Cnt=0;
-        Speed=0;
+        init = true;
+        Cnt = 0;
+        Speed = 0;
         WindSpeed_TimerStart();
     }
 
@@ -33,11 +33,11 @@ bool WindSpeed_Init(void)
 
 void WindSpeed_Deinit(void)
 {
-    init=0;
+    init = false;
     WindSpeed_TimerStop();
 }
 
-uint16_t WindSpeed_GetSpeed(void)
+float WindSpeed_GetSpeed(void)
 {
-    return Speed;
+    return Speed; 
 }

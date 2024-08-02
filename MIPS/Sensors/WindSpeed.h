@@ -1,3 +1,4 @@
+
 #ifndef WINDSPEED_H
 #define	WINDSPEED_H
 
@@ -12,10 +13,10 @@ void WindSpeed_Deinit(void);
 
 void WindSpeed_Process(void);
 
-uint16_t WindSpeed_GetSpeed(void);
+float WindSpeed_GetSpeed(void);
 
 void WindSpeed_TimerStart(void);
 
 void WindSpeed_TimerStop(void);
 
-#endif
+#endif 

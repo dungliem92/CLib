@@ -99,6 +99,7 @@ uint32_t _lastMeasurement=0;
 int16_t _lastAngle=0;
 
 //  for readAngle() and rawAngle()
+//set
 uint16_t _offset=0;
 
 //  EXPERIMENTAL
@@ -122,7 +123,7 @@ uint8_t readReg(uint8_t reg)
 
 uint16_t readReg2(uint8_t reg)
 {
-    uint16_t tmp;
+    uint16_t tmp=0xFFFF;
     uint8_t data[2];
 
     _error=AS5600_ERROR;
@@ -130,12 +131,11 @@ uint16_t readReg2(uint8_t reg)
     if(AS5600_I2C_WriteNByte(AS5600_SLV_ADDR, &reg, 1))
     {
         if(AS5600_I2C_ReadNByte(AS5600_SLV_ADDR, &data[0], 2))
+        {
+            tmp=((uint16_t) data[0]<<8)|data[1]; 
             _error=AS5600_OK;
+        }
     }
-
-    tmp=data[0];
-    tmp<<=1;
-    tmp|=data[1];
 
     return tmp;
 }
@@ -470,7 +470,7 @@ float AS5600_getAngularSpeed(uint8_t mode)
     uint32_t deltaT=now-_lastMeasurement;
     int deltaA=angle-_lastAngle;
 
-    //  assumption is that there is no more than 180° rotation
+    //  assumption is that there is no more than 180? rotation
     //  between two consecutive measurements.
     //  => at least two measurements per rotation (preferred 4).
     if(deltaA>2048)
@@ -590,11 +590,19 @@ void AS5600_Deinit(void)
 direction_t AS5600_GetAngle(uint16_t *pAngle)
 {
     float tmp;
-
+    
     *pAngle=AS5600_rawAngle();
     tmp=(float) *pAngle;
-    tmp/=22.5;
-    tmp+=0.5;
-
+    tmp=tmp*360.0;
+    tmp=tmp/4096.0;
+    tmp=tmp+70.0;
+    
+    if (tmp >= 360.0)
+        tmp -= 360.0; 
+    else if (tmp < 0.0)
+        tmp += 360.0;
+    
+    tmp = 360.0 - tmp;
+    
     return (direction_t) tmp;
 }

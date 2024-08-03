@@ -9,6 +9,7 @@
 #define __dbc(...)
 #define __dbh2(...)
 #define __tsdbs(...)
+#define __dbsu(...)
 #endif
 
 /* ******************************************************* External variables */
@@ -270,7 +271,7 @@ int8_t ATCMD_SendGetAck(const char *pTx, const char *pAck, const char *pNAck,
                     {
                         ReTry=0;
                         DoNext=0;
-                        __dbs("\nRX timeout");
+                        __dbsu("\nRX timeout: ", firstWait);
                         return RESULT_ERR;
                     }
                     else
@@ -300,6 +301,8 @@ int8_t ATCMD_SendGetAck(const char *pTx, const char *pAck, const char *pNAck,
                         __dbs("\nFound Ack");
                     else
                         __dbs("\nFound Nack");
+                    
+                    __dbsu(", t=", lastWait);
 
                     return lastRslt;
                 }

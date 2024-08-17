@@ -9,12 +9,12 @@
 typedef __PACKED_STRUCT
 {
     uint8_t ACTIVELOGIC;
-    gpio_pin_t Pin;
+    const gpio_pin_t Pin;
 }
 ind_io_t;
 
 typedef __PACKED_STRUCT IND_CXT_T{
-    const ind_io_t IO;
+    ind_io_t IO;
     uint8_t Task;
     uint16_t Ton;
     uint16_t Toff;
